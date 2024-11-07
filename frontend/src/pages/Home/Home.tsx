@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { useAppSelector } from '../app/hooks'
+import { useAppSelector } from '../../app/hooks.ts'
 import { useNavigate } from 'react-router-dom'
-import Navigation from './Auth/Navigation.tsx'
-import Profile from './Auth/Profile.tsx'
+import Navigation from '../Auth/Navigation.tsx'
+import Profile from '../Auth/Profile.tsx'
+import Main from './Main.tsx'
 
 const Home = () => {
 
@@ -22,9 +23,8 @@ const Home = () => {
         <div
             className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-100 to-secondary-100`}
         >
-            <h1 className="text-4xl text-center pt-10">Welcome to the Home Page</h1>
-            
             {profileOn && <Profile/>}
+            <Main />
         </div>
     )
 }

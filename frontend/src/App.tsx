@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navigation from './pages/Auth/Navigation.tsx';
-import Home from './pages/Home.tsx';
+import Home from './pages/Home/Home.tsx';
 
 function App() {
 

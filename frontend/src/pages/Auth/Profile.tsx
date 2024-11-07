@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { useProfileUpdateMutation } from "../../app/api/users";
+import { motion } from "framer-motion";
 import skywingsLogo from "../../assets/skywingsLogo.png";
 
 const Profile = () => {
@@ -53,7 +54,9 @@ const Profile = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen fixed inset-0 z-50">
-            <div
+            <motion.div
+                initial={{ scale: 0.75 }}
+                animate={{ scale: 1 }}
                 className="relative bg-white bg-opacity-20 backdrop-blur-lg shadow-2xl rounded-2xl px-10 py-8 
                                 w-[550px] transform transition-all duration-500 "
             >
@@ -123,7 +126,7 @@ const Profile = () => {
                         </form>
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };

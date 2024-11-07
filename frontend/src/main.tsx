@@ -6,7 +6,7 @@ import { Route, RouterProvider, createRoutesFromElements } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 
 import App from './App.tsx'
-import Home from './pages/Home.tsx'
+import Home from './pages/Home/Home.tsx'
 import Login from './pages/Auth/Login.tsx'
 import Register from './pages/Auth/Register.tsx'
 import ForgotPassword from './pages/Auth/ForgotPassword.tsx'
