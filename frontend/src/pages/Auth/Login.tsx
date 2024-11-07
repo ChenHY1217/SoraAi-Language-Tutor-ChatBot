@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../../app/api/users";
 import { setCredentials } from "../../app/features/auth/authSlice";
-import Loader from "../../components/Loader";
+import { motion } from "framer-motion";
 
 const Login: React.FC = () => {
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
@@ -16,8 +16,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [loginApiCall, { isLoading, error }] = useLoginMutation();
-
+  const [loginApiCall, { isLoading }] = useLoginMutation();
   // Redirect to home if already logged in
   const { search } = useLocation(); // Returns the current location object or url
   const sp = new URLSearchParams(search);
@@ -34,24 +33,25 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggingIn(true);
-
+    
     try{
       const response = await loginApiCall({ email, password }).unwrap();
-
-      dispatch(setCredentials({ ...response }));
-      navigate(redirect);
+    
+      // Simulate a login delay and then reset state (for the example)
+      setTimeout(() => {
+        // Here you would put your actual login logic
+        // After successful login, navigate or hide component
+        dispatch(setCredentials({ ...response }));
+        navigate(redirect);
+        
+      }, 500);
 
       toast.success("Logged in successfully");
     } catch (error: any) {
+      setIsLoggingIn(false);
       toast.error(error?.data?.message || "An error occurred");
     }
 
-    // Simulate a login delay and then reset state (for the example)
-    setTimeout(() => {
-      // Here you would put your actual login logic
-      // After successful login, navigate or hide component
-      setIsLoggingIn(false); // reset or navigate to a new page
-    }, 1000);
   };
 
   return (
@@ -69,12 +69,16 @@ const Login: React.FC = () => {
         </div>
 
         {/* Login form */}
-        <form
+        <motion.form
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: isLoggingIn ? 0 : 1, scale: isLoggingIn ? 0.95 : 1 }}
+          transition={{ 
+            ease: "easeInOut",
+            duration: 0.3
+          }}
           onSubmit={handleLogin}
           className={`relative bg-white bg-opacity-10 backdrop-blur-md shadow-lg rounded-lg px-8 py-6 
-                        w-80 transform transition-all duration-500 ${
-                          isLoggingIn ? "opacity-0 scale-95" : "opacity-100 scale-100"
-                        }`}
+                        w-80 transform transition-all duration-500`}
           style={{
             boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.1)",
           }}
@@ -109,11 +113,9 @@ const Login: React.FC = () => {
             type="submit"
             className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
           >
-            {isLoggingIn ? "Logging in..." : "Login"}
+            Login
           </button>
-
-          {isLoading && <Loader/>}
-
+          
           <div className="text-white mt-4 text-left">
             Don't have an account?{" "}
             <Link to={redirect ? `/register?redirect=${redirect}` : "/register"} className="text-secondary-100 hover:underline">
@@ -126,7 +128,7 @@ const Login: React.FC = () => {
               Click Here
             </Link>
           </div>
-        </form>
+        </motion.form>
       </div>
     </div>
   );
