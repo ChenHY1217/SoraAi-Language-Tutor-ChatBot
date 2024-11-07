@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useLogoutMutation } from "../../app/api/users";
 import { logout } from "../../app/features/auth/authSlice";
-import { toggleProfile } from "../../app/features/profile/profileSlice";
+import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { MdOutlineLocalMovies } from "react-icons/md";
 
 const Navigation: React.FC = () => {
@@ -36,6 +36,7 @@ const Navigation: React.FC = () => {
         try {
             await logoutApiCall({}).unwrap();
             dispatch(logout());
+            dispatch(setProfile(false));
             navigate("/login");
         } catch (error: any) {
             console.error(error);
@@ -97,7 +98,7 @@ const Navigation: React.FC = () => {
                                 <>
                                     <li>
                                         <Link
-                                            to="/admin/movies/dashboard"
+                                            to="/admin/dashboard"
                                             className="block px-4 py-2 hover:bg-gray-100"
                                         >
                                             Dashboard

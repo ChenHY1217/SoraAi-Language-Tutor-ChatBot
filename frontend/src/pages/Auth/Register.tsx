@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setCredentials } from "../../app/features/auth/authSlice";
-import { toast } from "react-toastify";
 import { useRegisterMutation } from "../../app/api/users";
 import Loader from "../../components/Loader";
 // import skywingsLogo from "../../assets/skywingsLogo.png";
@@ -20,7 +21,7 @@ const Register: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [registerApiCall, { isLoading, error }] = useRegisterMutation();
+    const [registerApiCall, { isLoading }] = useRegisterMutation();
 
     // Redirect to home if already logged in
     const { search } = useLocation(); // Returns the current location object or url
@@ -45,12 +46,16 @@ const Register: React.FC = () => {
         } else {
             try{
                 const response = await registerApiCall({username, email, password}).unwrap();
-                if(response.error){
-                    throw new Error(response.error.message);
-                }
 
-                dispatch(setCredentials({...response}));
-                navigate(redirect);
+                // Simulate a login delay and then reset state (for the example)
+                setTimeout(() => {
+                    // Here you would put your actual login logic
+                    // After successful login, navigate or hide component
+                    dispatch(setCredentials({ ...response }));
+                    navigate(redirect);
+                    
+                }, 500);
+                
                 toast.success("Registration successful");
             } catch (error) {
                 console.error(error);
@@ -73,11 +78,17 @@ const Register: React.FC = () => {
 
     return (
         <div
-            className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-100 to-secondary-100`}
+            className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-blue-500 to-purple-600`}
         >
             <div className="flex flex-row items-center justify-around min-h-screen">
                 {/* Register form */}
-                <form
+                <motion.form
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: isRegistering ? 0 : 1, scale: isRegistering ? 0.95 : 1 }}
+                    transition={{ 
+                    ease: "easeInOut",
+                    duration: 0.3
+                    }}
                     onSubmit={handleRegister}
                     className={`relative bg-white bg-opacity-10 backdrop-blur-md shadow-xl rounded-lg px-8 py-6 
                                 w-80 transform transition-all duration-500 
@@ -147,7 +158,7 @@ const Register: React.FC = () => {
                         </Link>
                     </div>
 
-                </form>
+                </motion.form>
 
                 {/* Potentially have a better image on the side or as background */}
                 {/* <div>

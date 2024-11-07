@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../../app/api/users";
 import { setCredentials } from "../../app/features/auth/authSlice";
+import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { motion } from "framer-motion";
 
 const Login: React.FC = () => {
@@ -33,6 +34,7 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggingIn(true);
+    dispatch(setProfile(false));
     
     try{
       const response = await loginApiCall({ email, password }).unwrap();
@@ -56,7 +58,7 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-100 to-secondary-100`}
+      className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-blue-500 to-purple-600`}
     >
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Title */}
@@ -77,33 +79,33 @@ const Login: React.FC = () => {
             duration: 0.3
           }}
           onSubmit={handleLogin}
-          className={`relative bg-white bg-opacity-10 backdrop-blur-md shadow-lg rounded-lg px-8 py-6 
-                        w-80 transform transition-all duration-500`}
+          className={`relative bg-white bg-opacity-10 backdrop-blur-md shadow-lg rounded-lg px-10 py-8 
+                        w-96 transform transition-all duration-500`}
           style={{
             boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <h2 className="text-white text-2xl font-semibold text-center mb-6">
+          <h2 className="text-white text-3xl font-semibold text-center mb-8">
             Login
           </h2>
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block text-white text-sm mb-2">Email</label>
             <input
               type="email"
               value={email}
               required
-              className="w-full px-3 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
               placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-6">
             <label className="block text-white text-sm mb-2">Password</label>
             <input
               type="password"
               value={password}
               required
-              className="w-full px-3 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
               placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -111,18 +113,18 @@ const Login: React.FC = () => {
           <button
             disabled={isLoading}
             type="submit"
-            className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
           >
             Login
           </button>
           
-          <div className="text-white mt-4 text-left">
+          <div className="text-white mt-6 text-left">
             Don't have an account?{" "}
             <Link to={redirect ? `/register?redirect=${redirect}` : "/register"} className="text-secondary-100 hover:underline">
               Register
             </Link>
           </div>
-          <div className="text-white text-left mt-2">
+          <div className="text-white text-left mt-4">
             Forgot your password?{" "}
             <Link to={redirect ? `/forgot?redirect=${redirect}` : "/forgot"} className="text-secondary-100 hover:underline">
               Click Here
