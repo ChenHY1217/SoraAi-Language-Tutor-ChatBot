@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         vocabulary: Number,
         grammarLevel: Number,
     },
-    chatHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }],
+    chatHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chats' }], // Ensure the model name matches the one used in Chat.js
     isAdmin: { 
         type: Boolean, 
         required: true, 
