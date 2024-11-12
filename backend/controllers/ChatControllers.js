@@ -127,7 +127,7 @@ const getUserChats = asyncHandler(async (req, res) => {
 // @desc    Get a single chat session
 // @route   GET /api/chats/:id
 // @access  Private
-const getChat = asyncHandler(async (req, res) => {
+const getChatById = asyncHandler(async (req, res) => {
     try {
         const chatId = req.params.id;
         const userId = req.user._id;
@@ -239,4 +239,11 @@ const continueChat = asyncHandler(async (req, res) => {
     }
 });
 
-export { getUserChats, createChat, continueChat, testGPT };
+export {
+    getUserChats,
+    createChat,
+    continueChat,
+    testGPT,
+    getChatById,
+    getChatMessages,
+};

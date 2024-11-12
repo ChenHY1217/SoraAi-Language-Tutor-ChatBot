@@ -3,7 +3,6 @@ import { CHATS_URL } from "../constants";
 
 export const chatApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-
         getChats: builder.query({
             query: () => ({
                 url: `${CHATS_URL}`,
@@ -11,7 +10,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
             }),
         }),
 
-        getChat: builder.query({
+        getChatById: builder.query({
             query: (chatId) => ({
                 url: `${CHATS_URL}/${chatId}`,
                 method: "GET",
@@ -42,3 +41,11 @@ export const chatApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 });
+
+export const {
+    useGetChatsQuery,
+    useGetChatByIdQuery,
+    useGetChatMessagesQuery,
+    useCreateChatMutation,
+    useContinueChatMutation,
+} = chatApiSlice;
