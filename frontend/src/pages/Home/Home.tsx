@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
 import { useNavigate } from 'react-router-dom'
-import Navigation from '../Auth/Navigation.tsx'
+import Navigation from '../../components/Navigation.tsx'
 import Profile from '../Auth/Profile.tsx'
 import Main from './Main.tsx'
 

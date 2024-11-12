@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [isEmailSent, setIsEmailSent] = useState<boolea>(false);
+    const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
 
     // const [sendVerificationEmail] = useSendVerificationEmailMutation();
 

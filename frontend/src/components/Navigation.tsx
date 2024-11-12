@@ -7,10 +7,10 @@ import {
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useLogoutMutation } from "../../app/api/users";
-import { logout } from "../../app/features/auth/authSlice";
-import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useLogoutMutation } from "../app/api/users";
+import { logout } from "../app/features/auth/authSlice";
+import { toggleProfile, setProfile } from "../app/features/profile/profileSlice";
 import { MdOutlineLocalMovies } from "react-icons/md";
 
 const Navigation: React.FC = () => {
