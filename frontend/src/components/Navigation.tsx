@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     AiOutlineHome,
     AiOutlineLogin,
@@ -11,12 +11,15 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useLogoutMutation } from "../app/api/users";
 import { logout } from "../app/features/auth/authSlice";
 import { toggleProfile, setProfile } from "../app/features/profile/profileSlice";
-import { MdOutlineLocalMovies } from "react-icons/md";
 
 const Navigation: React.FC = () => {
     const { userInfo } = useAppSelector((state) => state.auth);
     const profileOn = useAppSelector((state) => state.profile);
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        setDropdownOpen(false); // Reset dropdown state on mount or login
+    }, [userInfo]);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);

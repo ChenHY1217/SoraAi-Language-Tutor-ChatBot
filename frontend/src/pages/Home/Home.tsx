@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
 import { useNavigate } from 'react-router-dom'
-import Navigation from '../../components/Navigation.tsx'
 import Profile from '../Auth/Profile.tsx'
-import Main from './Main.tsx'
+import ChatSection from './ChatSection.tsx'
 
 const Home = () => {
 
@@ -24,7 +23,8 @@ const Home = () => {
             className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-100 to-secondary-100`}
         >
             {profileOn && <Profile/>}
-            <Main />
+
+            <ChatSection />
         </div>
     )
 }

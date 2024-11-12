@@ -13,7 +13,6 @@ const openai = new OpenAI({
 });
 
 // Function to test the GPT model
-// POST /api/chats/test
 const testGPT = asyncHandler(async (req, res) => {
     try {
         const { message } = req.body;
@@ -125,8 +124,51 @@ const getUserChats = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Get a single chat session
+// @route   GET /api/chats/:id
+// @access  Private
+const getChat = asyncHandler(async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const userId = req.user._id;
+        const chat = await Chat.findById(chatId);
+
+        // Check if user is authorized to view chat
+        if (chat.userId.toString() !== userId.toString()) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        res.json(chat);
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// @desc    Get the messages of a single chat session
+// @route   GET /api/chats/:id/messages
+// @access  Private
+
+const getChatMessages = asyncHandler(async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const userId = req.user._id;
+        const chat = await Chat.findById(chatId);
+
+        // Check if user is authorized to view chat
+        if (chat.userId.toString() !== userId.toString()) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        res.json(chat.messages);
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: error.message });
+    }
+});
+
 // @desc    Create a new chat
-// @route   POST /api/chats
+// @route   POST /api/chats/create
 // @access  Private
 const createChat = asyncHandler(async (req, res) => {
     try {
@@ -189,7 +231,7 @@ const continueChat = asyncHandler(async (req, res) => {
         chat.messages.push(botMessage);
         await chat.save();
 
-        res.json(chat);
+        res.json(chat.messages);
 
     } catch (error) {
         console.log(error);
