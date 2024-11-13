@@ -231,7 +231,7 @@ const continueChat = asyncHandler(async (req, res) => {
         chat.messages.push(botMessage);
         await chat.save();
 
-        res.json(chat.messages);
+        res.json(chat);
 
     } catch (error) {
         console.log(error);

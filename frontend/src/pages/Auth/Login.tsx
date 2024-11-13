@@ -58,7 +58,7 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-blue-500 to-purple-600`}
+      className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-400 to-secondary-400`}
     >
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Title */}
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
           <button
             disabled={isLoading}
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+            className="w-full py-3 bg-gradient-to-r from-primary-400 to-secondary-400 text-white font-semibold rounded-lg hover:scale-105 hover:from-primary-500 hover:to-secondary-500 transition-all duration-300"
           >
             Login
           </button>

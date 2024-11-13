@@ -34,7 +34,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
 
         continueChat: builder.mutation({
             query: ({ chatId, body }: { chatId: string; body: any }) => ({
-                url: `${CHATS_URL}/${chatId}/send`,
+                url: `${CHATS_URL}/${chatId}`,
                 method: "PATCH",
                 body,
             }),
