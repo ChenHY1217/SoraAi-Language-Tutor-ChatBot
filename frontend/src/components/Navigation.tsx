@@ -17,6 +17,9 @@ const Navigation: React.FC = () => {
     const profileOn = useAppSelector((state) => state.profile);
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     useEffect(() => {
         setDropdownOpen(false); // Reset dropdown state on mount or login
     }, [userInfo]);
@@ -28,9 +31,6 @@ const Navigation: React.FC = () => {
     const handleToggleProfile = () => {
         dispatch(toggleProfile());
     }
-
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     // Handles logout
     const [logoutApiCall] = useLogoutMutation();

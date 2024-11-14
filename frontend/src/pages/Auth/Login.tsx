@@ -63,7 +63,7 @@ const Login: React.FC = () => {
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Title */}
         <div
-          className={`font-bold font-mono text-4xl text-white mb-10 transform duration-500 transition-all ${
+          className={`font-bold font-mono text-4xl text-gray-900 mb-10 transform duration-500 transition-all ${
             isLoggingIn ? "opacity-0 scale-95" : "opacity-100 scale-100"
           }`}
         >
@@ -72,10 +72,11 @@ const Login: React.FC = () => {
 
         {/* Login form */}
         <motion.form
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: isLoggingIn ? 0 : 1, scale: isLoggingIn ? 0.95 : 1 }}
           transition={{ 
-            ease: "easeInOut",
+            ease: "easeOut",
+            delay: 1,
             duration: 0.3
           }}
           onSubmit={handleLogin}
@@ -85,27 +86,27 @@ const Login: React.FC = () => {
             boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <h2 className="text-white text-3xl font-semibold text-center mb-8">
+          <h2 className="text-gray-900 text-3xl font-semibold text-center mb-8">
             Login
           </h2>
           <div className="mb-6">
-            <label className="block text-white text-sm mb-2">Email</label>
+            <label className="block text-gray-900 text-sm mb-2">Email</label>
             <input
               type="email"
               value={email}
               required
-              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:scale-105 duration-300 transition-all"
               placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
-            <label className="block text-white text-sm mb-2">Password</label>
+            <label className="block text-gray-900 text-sm mb-2">Password</label>
             <input
               type="password"
               value={password}
               required
-              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+              className="w-full px-4 py-3 bg-transparent border-b border-l border-white rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:scale-105 duration-300 transition-all"
               placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -113,18 +114,18 @@ const Login: React.FC = () => {
           <button
             disabled={isLoading}
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-primary-400 to-secondary-400 text-white font-semibold rounded-lg hover:scale-105 hover:from-primary-500 hover:to-secondary-500 transition-all duration-300"
+            className="w-full py-3 bg-gradient-to-r from-primary-400 to-secondary-400 text-gray-900 font-semibold rounded-lg hover:scale-105 hover:from-primary-500 hover:to-secondary-500 transition-all duration-300"
           >
             Login
           </button>
           
-          <div className="text-white mt-6 text-left">
+          <div className="text-gray-900 mt-6 text-left">
             Don't have an account?{" "}
             <Link to={redirect ? `/register?redirect=${redirect}` : "/register"} className="text-secondary-100 hover:underline">
               Register
             </Link>
           </div>
-          <div className="text-white text-left mt-4">
+          <div className="text-gray-900 text-left mt-4">
             Forgot your password?{" "}
             <Link to={redirect ? `/forgot?redirect=${redirect}` : "/forgot"} className="text-secondary-100 hover:underline">
               Click Here

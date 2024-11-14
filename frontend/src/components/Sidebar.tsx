@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { HiMenuAlt2, HiX } from 'react-icons/hi';
 import Loader from './Loader';
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(true);
+const Sidebar: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
     const { data: userData, error, isLoading } = useGetChatsQuery({});
 
     const chats = userData?.chatHistory || [];
@@ -20,11 +20,11 @@ const Sidebar = () => {
         <>
             <button 
                 onClick={handleSidebarToggle}
-                className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-200 shadow-sm"
+                className="fixed top-4 left-4 z-[60] p-2 rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-200 shadow-sm"
             >
                 {isOpen ? <HiX size={24} /> : <HiMenuAlt2 size={24} />}
             </button>
-            <nav className={`fixed left-0 top-0 h-screen w-64 flex flex-col px-4 py-6 transform transition-all duration-500 bg-white bg-opacity-10 backdrop-blur-md shadow-lg ${
+            <nav className={`fixed left-0 top-0 h-screen w-64 flex flex-col px-4 py-6 transform transition-all duration-500 bg-white bg-opacity-10 backdrop-blur-md shadow-lg z-50 ${
                 isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`} aria-label='Chat History'>
                 <div className='relative flex-1 overflow-y-auto pt-8'>

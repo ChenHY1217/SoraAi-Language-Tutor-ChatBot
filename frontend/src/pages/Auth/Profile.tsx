@@ -61,56 +61,56 @@ const Profile = () => {
                                 w-[550px] transform transition-all duration-500 "
             >
                 <div className="grid grid-cols-10 gap-6">
-                    <div className="col-span-3 rounded-lg p-4 flex flex-col items-center">
+                    <div className="hidden xsm:flex xsm:flex-col col-span-3 rounded-lg p-4 items-center ">
                         <img src={skywingsLogo} alt="Profile" className="w-32 h-24 rounded-full mb-4 mx-4 hover:scale-105 duration-300" />
-                        <h3 className="text-white text-lg font-semibold text-center">Welcome Back!</h3>
-                        <p className="text-white text-sm text-center mt-2">Update your profile information to keep your account secure and personalized.</p>
+                        <h3 className="text-gray-900 text-lg font-semibold text-center">Welcome Back!</h3>
+                        <p className="text-gray-900 text-sm text-center mt-2">Update your profile information to keep your account secure and personalized.</p>
                     </div>
-                    <div className="col-span-7">
+                    <div className="col-span-10 xsm:col-span-7">
                         <form
                             onSubmit={handleUpdate}
                         >
-                            <h2 className="text-white text-3xl font-bold text-center mb-6">
+                            <h2 className="text-gray-900 text-3xl font-bold text-center mb-6">
                                 Update Profile
                             </h2>
                             <div className="mb-4">
-                                <label className="block text-white text-sm mb-2">Username</label>
+                                <label className="block text-gray-900 text-sm mb-2">Username</label>
                                 <input
                                     type="text"
                                     value={username}
-                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-gray-900 rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
                                     placeholder="Enter your username"
                                     onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-white text-sm mb-2">Email</label>
+                                <label className="block text-gray-900 text-sm mb-2">Email</label>
                                 <input
                                     type="email"
                                     value={email}
-                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-gray-900 rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
                                     placeholder="Enter your email"
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-white text-sm mb-2">Password</label>
+                                <label className="block text-gray-900 text-sm mb-2">Password</label>
                                 <input
                                     type="password"
                                     value={password}
-                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-gray-900 rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
                                     placeholder="Enter your password"
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-4">
-                                <label className="block text-white text-sm mb-2">
+                                <label className="block text-gray-900 text-sm mb-2">
                                     Confirm Password
                                 </label>
                                 <input
                                     type="password"
                                     value={confirmPassword}
-                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-white rounded-lg text-white placeholder-white focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
+                                    className="w-full px-4 py-2 bg-transparent border-b border-l border-gray-900 rounded-lg text-gray-900 placeholder-gray-900 focus:border-none focus:outline-none focus:ring-2 focus:ring-secondary-100 focus:scale-105 duration-300 transition-all"
                                     placeholder="Enter your password"
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
@@ -118,7 +118,7 @@ const Profile = () => {
                             <button
                                 disabled={isLoading}
                                 type="submit"
-                                className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                                className="w-full py-3 bg-gradient-to-r from-primary-400 to-secondary-400 text-gray-900 font-semibold rounded-lg hover:scale-105 hover:from-priamry-500 hover:to-secondary-500 transition-all duration-300"
                             >
                                 {isLoading ? "Updating..." : "Update"}
                             </button>

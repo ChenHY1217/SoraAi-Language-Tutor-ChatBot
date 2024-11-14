@@ -11,9 +11,8 @@ function App() {
     return (
         
         <div>
-            <Outlet />
             <ToastContainer />
-            <Navigation/>
+            <Outlet />
         </div>
     );
 }

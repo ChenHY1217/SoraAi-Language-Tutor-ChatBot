@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
 import { useNavigate } from 'react-router-dom'
+import IconNav from '../../components/IconNav.tsx'
 import Profile from '../Auth/Profile.tsx'
 import ChatSection from '../../components/ChatSection.tsx'
 import Sidebar from '../../components/Sidebar.tsx'
@@ -21,6 +22,7 @@ const Home = () => {
     return (
         <div className="min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-300 to-secondary-300">
             {profileOn && <Profile />}
+            <IconNav />
             <div className="flex flex-col md:flex-row">
                 <Sidebar />
                 <ChatSection />

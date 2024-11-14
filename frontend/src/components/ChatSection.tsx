@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { 
@@ -6,16 +6,23 @@ import {
     useContinueChatMutation,
     useGetChatByIdQuery,
 } from '../app/api/chats';
+import { IoSendSharp } from 'react-icons/io5';
+import Loader from './Loader';
 
 interface Message {
     sender: 'user' | 'bot',
     text: string,
+    isTyping?: boolean
 }
 
-function ChatComponent() {
-    const { chatId } = useParams();
+const ChatComponent: React.FC = () => {
+
+    let { chatId } = useParams();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState<string>('');
+    const [inputHeight, setInputHeight] = useState<number>(0);
+    const [isAIResponding, setIsAIResponding] = useState(false);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [createChat] = useCreateChatMutation();
     const [continueChat] = useContinueChatMutation();
@@ -35,24 +42,60 @@ function ChatComponent() {
         }
     }, [chatData]);
 
+    const typeMessage = async (text: string) => {
+        let currentText = '';
+        for (let i = 0; i < text.length; i++) {
+            currentText += text[i];
+            setMessages(prev => [
+                ...prev.slice(0, -1),
+                { sender: 'bot', text: currentText, isTyping: true }
+            ]);
+            await new Promise(resolve => setTimeout(resolve, 30));
+        }
+        setMessages(prev => [
+            ...prev.slice(0, -1),
+            { sender: 'bot', text: currentText, isTyping: false }
+        ]);
+    };
+
+    // Update textarea height based on content
+    const updateTextareaHeight = (element: HTMLTextAreaElement) => {
+        element.style.height = 'auto';
+        element.style.height = `${element.scrollHeight}px`;
+        setInputHeight(element.scrollHeight);
+    };
+
     // Send user message to the chat and receive response from AI
     // Creates new chat if there are no previous messages
     // Continues chat if there are previous messages
-    const handleSendMessage = async () => {
-
-        if (input.trim() === '') return;
-
-        // Add user message to the chat
-        setMessages([...messages, { sender: 'user', text: input }]);
+    const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+        
+        e.preventDefault();
+        const currentInput = input.trim();
+        if (currentInput === '') return;
+        
+        // Clear input immediately
+        setInput('');
+        if (textareaRef.current) {
+            textareaRef.current.style.height = '48px';
+            setInputHeight(48);
+        }
 
         // If there are no previous messages, create a new chat
-        if (messages.length == 1 && !chatId) {
+        if (messages.length === 0 && !chatId) {
             try {
-                const aiResponse = await createChat(input).unwrap();
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: 'bot', text: aiResponse.messages[1].message },
-                ]);
+                setMessages([{ sender: 'user', text: currentInput }]);
+                setIsAIResponding(true);
+                
+                const aiResponse = await createChat({message: currentInput}).unwrap();
+                const newChatId = aiResponse._id;
+                chatId = newChatId;
+                window.history.pushState({}, '', `/chat/${newChatId}`);
+
+                const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
+                setMessages(prev => [...prev, { sender: 'bot', text: '', isTyping: true }]);
+                await typeMessage(botMessage);
+                setIsAIResponding(false);
             } catch (error: any) {
                 console.error(error);
                 toast.error(error?.data?.message || "Failed to receive response from AI");
@@ -60,60 +103,93 @@ function ChatComponent() {
         }
 
         // If there are previous messages, continue the chat
-        if (messages.length > 1 && chatId) {
+        if (messages.length > 0 && chatId) {
             try {
-                const aiResponse = await continueChat({ chatId, body: { message: input } }).unwrap();
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    { sender: 'bot', text: aiResponse.messages[aiResponse.messages.length - 1].message },
-                ]);
+                setMessages(prev => [...prev, { sender: 'user', text: currentInput }]);
+                setIsAIResponding(true);
+
+                const aiResponse = await continueChat({ chatId, body: { message: currentInput } }).unwrap();
+                const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
+                setMessages(prev => [...prev, { sender: 'bot', text: '', isTyping: true }]);
+                await typeMessage(botMessage);
+                setIsAIResponding(false);
             } catch (error: any) {
                 console.error(error);
                 toast.error(error?.data?.message || "Failed to receive response from AI");
             }
         }
-
-        // Clear input field
-        setInput('');
     };
 
+    
+
     return (
-        <div className="flex flex-col h-full border rounded-lg shadow-lg">
-            <div className="flex-1 overflow-y-auto p-4">
+        <div className="relative flex flex-col h-screen w-full">
+            <div className="flex-1 overflow-y-auto p-4 pb-24">
                 {messages.map((msg, index) => (
                     <div
                         key={index}
-                        className={`mb-2 ${
-                            msg.sender === 'user' ? 'text-right' : 'text-left'
+                        className={`mb-4 flex ${
+                            msg.sender === 'user' ? 'justify-end' : 'justify-start'
                         }`}
                     >
-                        <div
-                            className={`inline-block px-3 py-2 rounded-md ${
-                                msg.sender === 'user'
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-300 text-black'
-                            }`}
-                        >
-                            {msg.text}
-                        </div>
+                        {msg.isTyping ? (
+                            <div className="flex items-center space-x-2">
+                                <Loader />
+                            </div>
+                        ) : (
+                            <div
+                                className={`max-w-[80%] ${
+                                    msg.sender === 'user'
+                                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                                        : 'bg-white/90 text-gray-800'
+                                } px-4 py-3 rounded-2xl shadow-md backdrop-blur-sm
+                                ${msg.sender === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'}
+                                whitespace-pre-wrap`}
+                            >
+                                {msg.text}
+                            </div>
+                        )}
                     </div>
                 ))}
+                {isAIResponding && (
+                    <div className="flex justify-start mb-4">
+                        <div className="bg-white/90 px-4 py-3 rounded-2xl shadow-md backdrop-blur-sm">
+                            <Loader />
+                        </div>
+                    </div>
+                )}
             </div>
-            <div className="flex p-2 border-t">
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    className="flex-1 p-2 border rounded-l-md outline-none"
-                />
-                <button
-                    onClick={handleSendMessage}
-                    className="px-4 bg-blue-500 text-white rounded-r-md hover:bg-blue-600"
+            <form 
+                onSubmit={handleSendMessage}
+                className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-2xl mx-auto px-4"
+            >
+                <div className={`flex items-end bg-white/90 backdrop-blur-sm shadow-xl border border-gray-200 
+                    ${inputHeight > 48 ? 'rounded-xl' : 'rounded-full'} 
+                    transition-all duration-200`}
                 >
-                    Send
-                </button>
-            </div>
+                    <textarea
+                        ref={textareaRef}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onInput={(e) => updateTextareaHeight(e.currentTarget)}
+                        placeholder="Type your message..."
+                        className="flex-1 px-4 py-3 bg-transparent outline-none resize-none max-h-[200px] min-h-[48px]"
+                        rows={1}
+                    />
+                    <button
+                        type='submit'
+                        className={`p-3 my-1 text-white bg-blue-500 
+                            ${inputHeight > 48 ? 'rounded-lg m-2' : 'rounded-full mx-3'} 
+                            hover:bg-blue-600 transition-all duration-200 group`}
+                        aria-label="Send message"
+                    >
+                        <IoSendSharp 
+                            size={20} 
+                            className="transform transition-transform duration-200 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:rotate-12" 
+                        />
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

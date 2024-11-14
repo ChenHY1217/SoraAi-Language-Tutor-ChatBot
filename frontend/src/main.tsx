@@ -19,6 +19,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path='/' element={<Home/>}/>
+      <Route path='/chat/:chatId' element={<Home/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>} />
       <Route path='/forgot' element={<ForgotPassword/>} />

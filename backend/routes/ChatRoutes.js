@@ -8,9 +8,8 @@ import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/")
-    .get(authenticate, getUserChats)
-    .post(authenticate, createChat);
+router.get('/', authenticate, getUserChats)
+router.post('/create', authenticate, createChat);
 
 router.route("/:id")
     .get(authenticate, getChatById)

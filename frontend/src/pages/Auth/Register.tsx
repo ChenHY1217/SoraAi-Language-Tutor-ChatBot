@@ -87,6 +87,7 @@ const Register: React.FC = () => {
                     animate={{ opacity: isRegistering ? 0 : 1, scale: isRegistering ? 0.95 : 1 }}
                     transition={{ 
                     ease: "easeInOut",
+                    delay: 1,
                     duration: 0.3
                     }}
                     onSubmit={handleRegister}
