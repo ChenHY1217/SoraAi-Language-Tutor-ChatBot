@@ -63,7 +63,7 @@ const Login: React.FC = () => {
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Title */}
         <div
-          className={`font-bold font-mono text-4xl text-gray-900 mb-10 transform duration-500 transition-all ${
+          className={`font-bold text-4xl text-gray-900 mb-10 transform duration-500 transition-all ${
             isLoggingIn ? "opacity-0 scale-95" : "opacity-100 scale-100"
           }`}
         >
@@ -76,7 +76,6 @@ const Login: React.FC = () => {
           animate={{ opacity: isLoggingIn ? 0 : 1, scale: isLoggingIn ? 0.95 : 1 }}
           transition={{ 
             ease: "easeOut",
-            delay: 1,
             duration: 0.3
           }}
           onSubmit={handleLogin}

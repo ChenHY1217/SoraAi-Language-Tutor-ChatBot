@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import IconNav from '../../components/IconNav.tsx'
 import Profile from '../Auth/Profile.tsx'
 import ChatSection from '../../components/ChatSection.tsx'
@@ -10,6 +10,7 @@ const Home = () => {
 
     const { userInfo } = useAppSelector((state) => state.auth);
     const profileOn = useAppSelector((state) => state.profile);
+    // Need to pass chatId from url to sidebar and chatsection components
     const navigate = useNavigate();
 
     useEffect(() => {

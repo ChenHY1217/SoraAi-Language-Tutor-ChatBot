@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { 
     useCreateChatMutation,
@@ -18,6 +18,7 @@ interface Message {
 const ChatComponent: React.FC = () => {
 
     let { chatId } = useParams();
+    const location = useLocation();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState<string>('');
     const [inputHeight, setInputHeight] = useState<number>(0);
@@ -40,21 +41,28 @@ const ChatComponent: React.FC = () => {
             }));
             setMessages(formattedMessages);
         }
-    }, [chatData]);
+        if (!chatId || location.pathname === '/') {
+            setMessages([]);
+            chatId = undefined;
+        }
+    }, [chatData, chatId, location]);
 
     const typeMessage = async (text: string) => {
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         let currentText = '';
+        
         for (let i = 0; i < text.length; i++) {
+            await delay(30);
             currentText += text[i];
             setMessages(prev => [
                 ...prev.slice(0, -1),
                 { sender: 'bot', text: currentText, isTyping: true }
             ]);
-            await new Promise(resolve => setTimeout(resolve, 30));
         }
+        
         setMessages(prev => [
             ...prev.slice(0, -1),
-            { sender: 'bot', text: currentText, isTyping: false }
+            { sender: 'bot', text: currentText }
         ]);
     };
 
@@ -123,8 +131,8 @@ const ChatComponent: React.FC = () => {
     
 
     return (
-        <div className="relative flex flex-col h-screen w-full">
-            <div className="flex-1 overflow-y-auto p-4 pb-24">
+        <div className="relative flex flex-col h-screen w-full pt-24">
+            <div className="flex-1 overflow-y-auto p-4 pb-24 max-w-4xl mx-auto w-full">
                 {messages.map((msg, index) => (
                     <div
                         key={index}
@@ -132,36 +140,25 @@ const ChatComponent: React.FC = () => {
                             msg.sender === 'user' ? 'justify-end' : 'justify-start'
                         }`}
                     >
-                        {msg.isTyping ? (
-                            <div className="flex items-center space-x-2">
-                                <Loader />
-                            </div>
-                        ) : (
-                            <div
-                                className={`max-w-[80%] ${
-                                    msg.sender === 'user'
-                                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
-                                        : 'bg-white/90 text-gray-800'
-                                } px-4 py-3 rounded-2xl shadow-md backdrop-blur-sm
-                                ${msg.sender === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'}
-                                whitespace-pre-wrap`}
-                            >
-                                {msg.text}
-                            </div>
-                        )}
-                    </div>
-                ))}
-                {isAIResponding && (
-                    <div className="flex justify-start mb-4">
-                        <div className="bg-white/90 px-4 py-3 rounded-2xl shadow-md backdrop-blur-sm">
-                            <Loader />
+                        <div
+                            className={`max-w-[80%] ${
+                                msg.sender === 'user'
+                                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white'
+                                    : 'bg-white/90 text-gray-800'
+                            } px-4 py-3 rounded-2xl shadow-md backdrop-blur-sm
+                            ${msg.sender === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'}
+                            whitespace-pre-wrap`}
+                        >
+                            {msg.text}
+                            {msg.isTyping && <Loader />}
                         </div>
                     </div>
-                )}
+                ))}
             </div>
+
             <form 
                 onSubmit={handleSendMessage}
-                className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-2xl mx-auto px-4"
+                className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-2xl mx-auto px-4"
             >
                 <div className={`flex items-end bg-white/90 backdrop-blur-sm shadow-xl border border-gray-200 
                     ${inputHeight > 48 ? 'rounded-xl' : 'rounded-full'} 
@@ -173,7 +170,7 @@ const ChatComponent: React.FC = () => {
                         onChange={(e) => setInput(e.target.value)}
                         onInput={(e) => updateTextareaHeight(e.currentTarget)}
                         placeholder="Type your message..."
-                        className="flex-1 px-4 py-3 bg-transparent outline-none resize-none max-h-[200px] min-h-[48px]"
+                        className="flex-1 px-6 py-3 bg-transparent outline-none resize-none max-h-[200px] min-h-[48px]"
                         rows={1}
                     />
                     <button

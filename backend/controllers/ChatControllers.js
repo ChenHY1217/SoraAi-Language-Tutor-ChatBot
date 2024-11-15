@@ -17,7 +17,7 @@ const testGPT = asyncHandler(async (req, res) => {
     try {
         const { message } = req.body;
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "gpt-4",
             messages: [
                 { role: "system", content: "You are a helpful language tutor." },
                 {
@@ -39,7 +39,6 @@ const testGPT = asyncHandler(async (req, res) => {
 
 // Function to generate a summary title for a chat session
 const generateSummaryTitle = async (messages) => {
-    
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -51,18 +50,17 @@ const generateSummaryTitle = async (messages) => {
                         The following message is the first message to a series of messages, requests, or questions
                         revolving around learning a new language. Please consider the following message and respond
                         with a title or summary line representing the potential conversation starting from this message. Your response should 
-                        only be that of a title or summary line. If the message has not enough context, please ask for more information.
+                        only be that of a title or summary line. Do not use quotation marks in your response.
                         This is the message: ${messages[0]}`,
                 },
             ],
         });
 
-        return response.choices[0].message.content.trim().toUpperCase();
+        return response.choices[0].message.content.trim().toUpperCase().replace(/['"]/g, '');
     } catch (error) {
         console.log(error);
         return "Chat Session";
     }
-
 };
 
 // define a function that waits for the OpenAI's GPT response
@@ -71,7 +69,7 @@ const waitingForAIResponse = async (message) => {
         // Send message to OpenAI's GPT
         
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+            model: "gpt-4",
             messages: [
                 { role: "system", content: "You are a helpful language tutor." },
                 {
@@ -131,7 +129,13 @@ const getChatById = asyncHandler(async (req, res) => {
     try {
         const chatId = req.params.id;
         const userId = req.user._id;
-        const chat = await Chat.findById(chatId);
+        
+        // Enhanced query with proper error handling
+        const chat = await Chat.findById(chatId).exec();
+        
+        if (!chat) {
+            return res.status(404).json({ message: "Chat not found" });
+        }
 
         // Check if user is authorized to view chat
         if (chat.userId.toString() !== userId.toString()) {
@@ -140,8 +144,12 @@ const getChatById = asyncHandler(async (req, res) => {
 
         res.json(chat);
     } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: error.message });
+        console.error('Error in getChatById:', error);
+        // Check for invalid ObjectId
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: "Invalid chat ID" });
+        }
+        res.status(500).json({ message: "Server error" });
     }
 });
 

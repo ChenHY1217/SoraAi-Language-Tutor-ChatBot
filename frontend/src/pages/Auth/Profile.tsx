@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { toast } from "react-toastify";
 import { setCredentials } from "../../app/features/auth/authSlice";
+import { toggleProfile } from "../../app/features/profile/profileSlice";
 import { useProfileUpdateMutation } from "../../app/api/users";
 import { motion } from "framer-motion";
 import skywingsLogo from "../../assets/skywingsLogo.png";
@@ -23,6 +24,10 @@ const Profile = () => {
             setEmail(userInfo.email);
         }
     }, [userInfo.email, userInfo.username]);
+
+    const handleToggleProfile = () => {
+        dispatch(toggleProfile());
+    }
 
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -60,6 +65,14 @@ const Profile = () => {
                 className="relative bg-white bg-opacity-20 backdrop-blur-lg shadow-2xl rounded-2xl px-10 py-8 
                                 w-[550px] transform transition-all duration-500 "
             >
+                <button
+                    onClick={handleToggleProfile}
+                    className="absolute top-4 right-4 text-gray-900 hover:text-secondary-400 transition-colors duration-300"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
                 <div className="grid grid-cols-10 gap-6">
                     <div className="hidden xsm:flex xsm:flex-col col-span-3 rounded-lg p-4 items-center ">
                         <img src={skywingsLogo} alt="Profile" className="w-32 h-24 rounded-full mb-4 mx-4 hover:scale-105 duration-300" />
