@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
+import META_PROMPT from "../Prompt.js";
 
 // OpenAI API Key
 dotenv.config();
@@ -19,7 +20,7 @@ const testGPT = asyncHandler(async (req, res) => {
         const response = await openai.chat.completions.create({
             model: "gpt-4",
             messages: [
-                { role: "system", content: "You are a helpful language tutor." },
+                { role: "system", content: META_PROMPT },
                 {
                     role: "user",
                     content: message,
@@ -43,56 +44,50 @@ const generateSummaryTitle = async (messages) => {
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
-                { role: "system", content: "You are a helpful language tutor." },
-                {
-                    role: "user",
-                    content: `This is the beginning of a conversation with you.
-                        The following message is the first message to a series of messages, requests, or questions
-                        revolving around learning a new language. Please consider the following message and respond
-                        with a title or summary line representing the potential conversation starting from this message. Your response should 
-                        only be that of a title or summary line. Do not use quotation marks in your response.
-                        This is the message: ${messages[0]}`,
-                },
+                { role: "system", content: "Generate a brief, one-line title for this chat session." },
+                { role: "user", content: `Title for chat about: ${messages[0]}` }
             ],
+            temperature: 0.7,
+            max_tokens: 30
         });
 
-        return response.choices[0].message.content.trim().toUpperCase().replace(/['"]/g, '');
+        return response.choices[0].message.content.trim().toUpperCase();
     } catch (error) {
-        console.log(error);
+        console.error('Title generation error:', error);
         return "Chat Session";
     }
 };
 
 // define a function that waits for the OpenAI's GPT response
-const waitingForAIResponse = async (message) => {
+const waitingForAIResponse = async (message, previousMessages = []) => {
     try {
-        // Send message to OpenAI's GPT
+        // Only include last 5 messages for context to reduce tokens
+        const recentMessages = previousMessages.slice(-5);
         
+        const formattedMessages = [
+            { role: "system", content: META_PROMPT },
+            ...recentMessages.map(msg => ({
+                role: msg.sender === 'user' ? 'user' : 'assistant',
+                content: msg.message
+            })),
+            { role: "user", content: message }
+        ];
+
         const response = await openai.chat.completions.create({
-            model: "gpt-4",
-            messages: [
-                { role: "system", content: "You are a helpful language tutor." },
-                {
-                    role: "user",
-                    content: `This following message is the start or continuation of a conversation with you regarding learning a new language.
-                        Please consider the following message and respond with a message that would be appropriate for the conversation.
-                        If the message has not enough context, please ask for more information.
-                        If the message is irrelavant or inappropriate, please respond with a message that would be appropriate for the conversation.
-                        This is the message: ${message}`,
-                },
-            ],
+            model: 'gpt-4o-mini',
+            messages: formattedMessages,
+            temperature: 0.7,
+            presence_penalty: 0.1
         });
 
-        const botMessage = {
+        return {
             sender: 'bot',
             message: response.choices[0].message.content,
             timestamp: Date.now(),
         };
-        
-        return botMessage;
 
     } catch (error) {
-        console.log(error);
+        console.error('AI response error:', error);
         return {
             sender: 'bot',
             message: 'Sorry, I am unable to respond at the moment.',
@@ -232,8 +227,8 @@ const continueChat = asyncHandler(async (req, res) => {
         chat.messages.push({ sender: "user", message: message, timestamp: Date.now() });
         await chat.save();
 
-        // Send user message to OpenAI's GPT
-        const botMessage = await waitingForAIResponse(message);
+        // Send user message to OpenAI's GPT with previous messages context
+        const botMessage = await waitingForAIResponse(message, chat.messages.slice(0, -1));
 
         // Update chat session with bot response
         chat.messages.push(botMessage);

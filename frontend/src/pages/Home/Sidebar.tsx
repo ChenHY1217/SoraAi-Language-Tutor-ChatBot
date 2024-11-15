@@ -1,12 +1,16 @@
-import { useGetChatsQuery } from '../app/api/chats';
+import { useGetChatsQuery } from '../../app/api/chats';
 import { useState } from 'react';
 import { HiMenuAlt2, HiX } from 'react-icons/hi';
-import Loader from './Loader';
+import Loader from '../../components/Loader';
 import { useNavigate } from 'react-router-dom';
 
 const Sidebar: React.FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const { data: userData, error, isLoading } = useGetChatsQuery({});
+    const { data: userData, error, isLoading } = useGetChatsQuery({}, {
+        // Add refetch conditions
+        refetchOnMountOrArgChange: true,
+        refetchOnFocus: true
+    });
     const navigate = useNavigate();
 
     const chats = userData?.chatHistory || [];

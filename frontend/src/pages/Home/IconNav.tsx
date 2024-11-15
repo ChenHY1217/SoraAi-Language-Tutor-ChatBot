@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { useLogoutMutation } from "../app/api/users";
-import { logout } from "../app/features/auth/authSlice";
-import { toggleProfile, setProfile } from "../app/features/profile/profileSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useLogoutMutation } from "../../app/api/users";
+import { logout } from "../../app/features/auth/authSlice";
+import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { FiSettings, FiUser, FiLogOut, FiPlus } from 'react-icons/fi';
 
 const IconNav: React.FC = () => {

@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
-import { useNavigate, useParams } from 'react-router-dom'
-import IconNav from '../../components/IconNav.tsx'
+import { useNavigate } from 'react-router-dom'
+import IconNav from './IconNav.tsx'
 import Profile from '../Auth/Profile.tsx'
-import ChatSection from '../../components/ChatSection.tsx'
-import Sidebar from '../../components/Sidebar.tsx'
+import ChatSection from './ChatSection.tsx'
+import Sidebar from './Sidebar.tsx'
+import NewChatIcon from '../../components/NewChatIcon'
+import backgroundImage from '../../assets/skyWithClouds.webp'
 
 const Home = () => {
 
@@ -21,13 +23,19 @@ const Home = () => {
 
     // from-primary-100 to-secondary-100
     return (
-        <div className="min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-300 to-secondary-300">
+        <div className="min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-1000"
+             style={{
+                 backgroundImage: `url(${backgroundImage})`,
+                 backgroundColor: 'rgba(255, 255, 255, 0.2)', // Changed opacity from 0.8 to 0.4
+                 backgroundBlendMode: 'overlay'
+             }}>
             {profileOn && <Profile />}
             <IconNav />
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col md:flex-row backdrop-blur-sm">
                 <Sidebar />
                 <ChatSection />
             </div>
+            <NewChatIcon />
         </div>
     );
 }
