@@ -26,7 +26,7 @@ const Home = () => {
         <div className="min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-1000"
              style={{
                  backgroundImage: `url(${backgroundImage})`,
-                 backgroundColor: 'rgba(255, 255, 255, 0.2)', // Changed opacity from 0.8 to 0.4
+                 backgroundColor: 'rgba(255, 255, 255, 0)', // Changed opacity from 0.8 to 0.4
                  backgroundBlendMode: 'overlay'
              }}>
             {profileOn && <Profile />}

@@ -156,7 +156,7 @@ const ChatComponent: React.FC = () => {
         <div className="relative flex flex-col h-screen w-full pt-24">
             {isNewChat ? (
                 <div className="flex-1 flex flex-col items-center justify-center px-4">
-                    <div className="max-w-2xl w-full space-y-8 text-center">
+                    <div className="max-w-2xl w-full space-y-8 text-center p-8">
                         <h1 className="text-4xl font-bold text-gray-800">
                             Welcome to SoraAi
                         </h1>

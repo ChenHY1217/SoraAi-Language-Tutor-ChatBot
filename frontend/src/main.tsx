@@ -1,9 +1,9 @@
 import { createRoot } from 'react-dom/client'
-import './index.css'
 import store from './app/store.ts'
 import { Provider } from 'react-redux'
-import { Route, RouterProvider, createRoutesFromElements } from 'react-router'
+import { Route, RouterProvider, createRoutesFromElements, useLocation } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
+import './index.css'
 
 import App from './App.tsx'
 import Home from './pages/Home/Home.tsx'
