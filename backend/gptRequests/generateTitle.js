@@ -1,5 +1,5 @@
-import openai from '../openai/openai';
-import META_PROMPT from '../prompt';
+import openai from '../openai.js';
+import META_PROMPT from '../prompt.js';
 
 // Function to generate a summary title for a chat session
 const generateSummaryTitle = async (messages) => {

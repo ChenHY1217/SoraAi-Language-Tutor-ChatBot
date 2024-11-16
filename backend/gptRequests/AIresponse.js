@@ -1,6 +1,6 @@
-import asyncHandler from 'express-async-handler';
-import openai from '../openai/openai';
-import META_PROMPT from '../prompt';
+import asyncHandler from '../middlewares/asyncHandler.js';
+import openai from '../openai.js';
+import META_PROMPT from '../prompt.js';
 
 // Function to test the GPT model
 const testGPT = asyncHandler(async (req, res) => {

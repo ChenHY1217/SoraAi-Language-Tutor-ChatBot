@@ -23,9 +23,9 @@ const Sidebar: React.FC = () => {
         navigate(`/chat/${chatId}`);
     };
 
-    const handleDeleteChat = (chatId: string) => {
-        // Delete chat
-    }
+    // const handleDeleteChat = (chatId: string) => {
+    //     // Delete chat
+    // }
     
 
     return (
