@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { useRegisterMutation } from "../../app/api/users";
 import Loader from "../../components/Loader";
-// import skywingsLogo from "../../assets/skywingsLogo.png";
+import backgroundImage from "../../assets/skyWithClouds.webp";
 
 const Register: React.FC = () => {
     // Form values
@@ -78,7 +78,12 @@ const Register: React.FC = () => {
 
     return (
         <div
-            className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-blue-500 to-purple-600`}
+            className={`min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-1000`}
+            style={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundColor: 'rgba(255, 255, 255, 0)', // Changed opacity from 0.8 to 0.4
+                backgroundBlendMode: 'overlay'
+            }}
         >
             <div className="flex flex-row items-center justify-around min-h-screen">
                 {/* Register form */}
@@ -144,7 +149,7 @@ const Register: React.FC = () => {
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:scale-105 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                        className="w-full py-2 bg-gradient-to-r from-primary-400 to-secondary-400 text-white font-semibold rounded-lg hover:scale-105 hover:from-primary-500 hover:to-secondary-500 transition-all duration-300"
                     >
                         {isLoading ? "Registering..." : "Register"}
                     </button>

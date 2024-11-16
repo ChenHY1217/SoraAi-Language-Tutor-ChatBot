@@ -31,7 +31,7 @@ const Home = () => {
              }}>
             {profileOn && <Profile />}
             <IconNav />
-            <div className="flex flex-col md:flex-row backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row">
                 <Sidebar />
                 <ChatSection />
             </div>

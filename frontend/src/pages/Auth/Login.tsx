@@ -6,6 +6,7 @@ import { useLoginMutation } from "../../app/api/users";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { motion } from "framer-motion";
+import backgroundImage from "../../assets/skyWithClouds.webp";
 
 const Login: React.FC = () => {
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
@@ -58,16 +59,22 @@ const Login: React.FC = () => {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-1000 bg-gradient-to-tr from-primary-400 to-secondary-400`}
+      className={`min-h-screen bg-cover bg-center bg-no-repeat transition-colors duration-1000`}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundColor: 'rgba(255, 255, 255, 0)', // Changed opacity from 0.8 to 0.4
+        backgroundBlendMode: 'overlay'
+      }}
     >
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Title */}
         <div
-          className={`font-bold text-4xl text-gray-900 mb-10 transform duration-500 transition-all ${
+          className={` text-center text-4xl text-gray-900 mb-6 transform duration-500 transition-all ${
             isLoggingIn ? "opacity-0 scale-95" : "opacity-100 scale-100"
           }`}
         >
-          SoraAi
+          <span className="font-bold">SoraAi</span>
+          <p className="text-lg font-medium mt-2">Your AI-powered language learning companion.</p>
         </div>
 
         {/* Login form */}
@@ -79,7 +86,7 @@ const Login: React.FC = () => {
             duration: 0.3
           }}
           onSubmit={handleLogin}
-          className={`relative bg-white bg-opacity-10 backdrop-blur-md shadow-lg rounded-lg px-10 py-8 
+          className={`relative bg-white bg-opacity-10 backdrop-blur-sm shadow-lg rounded-lg px-10 py-8 
                         w-96 transform transition-all duration-500`}
           style={{
             boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.1)",

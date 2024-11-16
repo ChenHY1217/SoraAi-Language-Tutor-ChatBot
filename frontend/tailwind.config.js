@@ -27,6 +27,9 @@ export default {
           500: '#0072ff',
         }
       },
+      borderWidth: {
+        '3': '3px',
+      },
     },
   },
   plugins: [

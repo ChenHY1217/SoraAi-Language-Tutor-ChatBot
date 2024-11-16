@@ -1,100 +1,8 @@
-import axios from "axios";
-import OpenAI from "openai";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
-import META_PROMPT from "../Prompt.js";
-
-// OpenAI API Key
-dotenv.config();
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Function to test the GPT model
-const testGPT = asyncHandler(async (req, res) => {
-    try {
-        const { message } = req.body;
-        const response = await openai.chat.completions.create({
-            model: "gpt-4",
-            messages: [
-                { role: "system", content: META_PROMPT },
-                {
-                    role: "user",
-                    content: message,
-                },
-            ],
-        });
-
-        res.json({
-            message: response.choices[0].message,
-            response
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: error.message });
-    }
-});
-
-// Function to generate a summary title for a chat session
-const generateSummaryTitle = async (messages) => {
-    try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                { role: "system", content: "Generate a brief, one-line title for this chat session." },
-                { role: "user", content: `Title for chat about: ${messages[0]}` }
-            ],
-            temperature: 0.7,
-            max_tokens: 30
-        });
-
-        return response.choices[0].message.content.trim().toUpperCase();
-    } catch (error) {
-        console.error('Title generation error:', error);
-        return "Chat Session";
-    }
-};
-
-// define a function that waits for the OpenAI's GPT response
-const waitingForAIResponse = async (message, previousMessages = []) => {
-    try {
-        // Only include last 5 messages for context to reduce tokens
-        const recentMessages = previousMessages.slice(-5);
-        
-        const formattedMessages = [
-            { role: "system", content: META_PROMPT },
-            ...recentMessages.map(msg => ({
-                role: msg.sender === 'user' ? 'user' : 'assistant',
-                content: msg.message
-            })),
-            { role: "user", content: message }
-        ];
-
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
-            messages: formattedMessages,
-            temperature: 0.7,
-            presence_penalty: 0.1
-        });
-
-        return {
-            sender: 'bot',
-            message: response.choices[0].message.content,
-            timestamp: Date.now(),
-        };
-
-    } catch (error) {
-        console.error('AI response error:', error);
-        return {
-            sender: 'bot',
-            message: 'Sorry, I am unable to respond at the moment.',
-            timestamp: Date.now(),
-        };
-    }
-};
+import generateSummaryTitle from "../gptRequests/generateTitle.js";
+import { waitingForAIResponse } from "../gptRequests/AIresponse.js";
 
 // @desc    Get 20 most recent chats for a user
 // @route   GET /api/chats
@@ -246,7 +154,6 @@ export {
     getUserChats,
     createChat,
     continueChat,
-    testGPT,
     getChatById,
     getChatMessages,
 };
