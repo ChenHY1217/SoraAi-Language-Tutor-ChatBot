@@ -39,6 +39,20 @@ export const chatApiSlice = apiSlice.injectEndpoints({
                 body,
             }),
         }),
+
+        deleteChatById: builder.mutation({
+            query: (chatId) => ({
+                url: `${CHATS_URL}/${chatId}`,
+                method: "DELETE",
+            }),
+        }),
+
+        clearChatHistory: builder.mutation({
+            query: () => ({
+                url: `${CHATS_URL}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -48,4 +62,6 @@ export const {
     useGetChatMessagesQuery,
     useCreateChatMutation,
     useContinueChatMutation,
+    useDeleteChatByIdMutation,
+    useClearChatHistoryMutation,
 } = chatApiSlice;

@@ -150,10 +150,69 @@ const continueChat = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Delete a chat session
+// @route   DELETE /api/chats/:id
+// @access  Private
+const deleteChatById = asyncHandler(async (req, res) => {
+    try {
+        const chatId = req.params.id;
+        const userId = req.user._id;
+        const chat = await Chat.findById(chatId);
+
+        // Check if user is authorized to delete chat
+        if (chat.userId.toString() !== userId.toString()) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        // Remove chat from user's chat history
+        const user = await User.findById(userId);
+        user.chatHistory = user.chatHistory.filter(chat => chat.toString() !== chatId);
+        await user.save();
+
+        // Delete chat session
+        await Chat.findByIdAndDelete(chatId);
+
+        res.json({ message: "Chat deleted" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// @desc    Clear chat history
+// @route   DELETE /api/chats
+// @access  Private
+const clearChatHistory = asyncHandler(async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Delete all chats belonging to the user
+        await Chat.deleteMany({ userId: userId });
+
+        // Clear the user's chat history array
+        user.chatHistory = [];
+        await user.save();
+
+        res.json({ message: "Chat history cleared successfully" });
+        
+    } catch (error) {
+        console.error('Error in clearChatHistory:', error);
+        res.status(500).json({ message: "Failed to clear chat history" });
+    }
+});
+
 export {
     getUserChats,
     createChat,
     continueChat,
     getChatById,
     getChatMessages,
+    deleteChatById,
+    clearChatHistory,
 };

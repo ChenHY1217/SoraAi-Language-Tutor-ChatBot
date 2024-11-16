@@ -109,6 +109,7 @@ const ChatComponent: React.FC = () => {
                 setIsAIResponding(true);
                 
                 const aiResponse = await createChat({message: currentInput}).unwrap();
+                // After successful chat creation, refetch the chats
                 const newChatId = aiResponse._id;
                 chatId = newChatId;
                 window.history.pushState({}, '', `/chat/${newChatId}`);

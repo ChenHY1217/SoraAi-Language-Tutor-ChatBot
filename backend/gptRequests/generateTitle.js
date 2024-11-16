@@ -15,10 +15,10 @@ const generateSummaryTitle = async (messages) => {
             max_tokens: 30
         });
 
-        return response.choices[0].message.content.trim().toUpperCase();
+        return response.choices[0].message.content.trim().toUpperCase().replace(/["']/g, '');
     } catch (error) {
         console.error('Title generation error:', error);
-        return "Chat Session";
+        return Chat_Session;
     }
 };
 
