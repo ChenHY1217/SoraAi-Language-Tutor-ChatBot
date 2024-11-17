@@ -10,6 +10,7 @@ import Home from './pages/Home/Home.tsx'
 import Login from './pages/Auth/Login.tsx'
 import Register from './pages/Auth/Register.tsx'
 import ForgotPassword from './pages/Auth/ForgotPassword.tsx'
+import ResetPassword from './pages/Auth/ResetPassword.tsx'
 
 // Authorization
 
@@ -22,7 +23,8 @@ const router = createBrowserRouter(
       <Route path='/chat/:chatId' element={<Home/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>} />
-      <Route path='/forgot' element={<ForgotPassword/>} />
+      <Route path='/forgot-password' element={<ForgotPassword/>} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
     </Route>
   )
 )

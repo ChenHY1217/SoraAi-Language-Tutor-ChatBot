@@ -133,7 +133,7 @@ const Login: React.FC = () => {
           </div>
           <div className="text-gray-900 text-left mt-4">
             Forgot your password?{" "}
-            <Link to={redirect ? `/forgot?redirect=${redirect}` : "/forgot"} className="text-secondary-100 hover:underline">
+            <Link to={redirect ? `/forgot-password?redirect=${redirect}` : "/forgot"} className="text-secondary-100 hover:underline">
               Click Here
             </Link>
           </div>

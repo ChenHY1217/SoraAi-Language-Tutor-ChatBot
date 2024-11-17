@@ -1,6 +1,3 @@
-
-import React from 'react';
-
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -9,6 +6,8 @@ interface ModalProps {
     message: string;
 }
 
+// This component is used to display a modal dialog box with a title, message, and two buttons: Cancel and Delete.
+// Mainly used to confirm deletion of a chat or clearing all chat history.
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, message }) => {
     if (!isOpen) return null;
 

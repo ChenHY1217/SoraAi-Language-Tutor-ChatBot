@@ -30,10 +30,16 @@ const ChatComponent: React.FC = () => {
     const [continueChat] = useContinueChatMutation();
     const { data: chatData, isLoading: isChatLoading } = useGetChatByIdQuery(
         chatId ?? 'skip',
-        { skip: !chatId }
+        { 
+            skip: !chatId,
+            refetchOnMountOrArgChange: true
+        }
     );
 
     const isNewChat = (!chatId || location.pathname === '/') && messages.length === 0;
+
+    const abortControllerRef = useRef<AbortController | null>(null);
+    const currentChatRef = useRef<string | undefined>(chatId);
 
     // Load chat messages into state
     // Also clear messages if chatId is undefined or location is '/'
@@ -51,24 +57,60 @@ const ChatComponent: React.FC = () => {
         }
     }, [chatData, chatId, location]);
 
+    // Update currentChatRef when chatId changes
+    useEffect(() => {
+        setMessages([]);
+        currentChatRef.current = chatId;
+        // Cleanup: abort any ongoing typing animation when switching chats
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
+    }, [chatId]);
+
     // Typing animation for bot messages
-    const typeMessage = async (text: string) => {
-        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    const typeMessage = async (text: string, targetChatId: string | undefined) => {
+        // Create new abort controller for this typing session
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal;
+
+        const delay = (ms: number) => new Promise((resolve, reject) => {
+            const timeout = setTimeout(resolve, ms);
+            signal.addEventListener('abort', () => {
+                clearTimeout(timeout);
+                reject(new Error('Typing aborted'));
+            });
+        });
+
         let currentText = '';
         
-        for (let i = 0; i < text.length; i++) {
-            await delay(10);
-            currentText += text[i];
+        try {
+            for (let i = 0; i < text.length; i++) {
+                if (signal.aborted || currentChatRef.current !== targetChatId) {
+                    throw new Error('Typing aborted');
+                }
+                await delay(10);
+                currentText += text[i];
+                setMessages(prev => [
+                    ...prev.slice(0, -1),
+                    { sender: 'bot', text: currentText, isTyping: true }
+                ]);
+            }
+            
             setMessages(prev => [
                 ...prev.slice(0, -1),
-                { sender: 'bot', text: currentText, isTyping: true }
+                { sender: 'bot', text: currentText }
             ]);
+        } catch (error: any) {
+            if (error.message === 'Typing aborted') {
+                // Typing was cancelled, do nothing
+                console.log('Typing animation cancelled');
+            }
         }
-        
-        setMessages(prev => [
-            ...prev.slice(0, -1),
-            { sender: 'bot', text: currentText }
-        ]);
     };
 
     // Update textarea height based on content
@@ -109,15 +151,15 @@ const ChatComponent: React.FC = () => {
                 setIsAIResponding(true);
                 
                 const aiResponse = await createChat({message: currentInput}).unwrap();
-                // After successful chat creation, refetch the chats
                 const newChatId = aiResponse._id;
+                // Update chatId and URL before adding bot message
                 chatId = newChatId;
+                currentChatRef.current = newChatId;
                 window.history.pushState({}, '', `/chat/${newChatId}`);
-                setMessages(prev => [...prev]);
 
                 const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
                 setMessages(prev => [...prev, { sender: 'bot', text: '', isTyping: true }]);
-                await typeMessage(botMessage);
+                await typeMessage(botMessage, newChatId);
                 setIsAIResponding(false);
             } catch (error: any) {
                 console.error(error);
@@ -134,7 +176,7 @@ const ChatComponent: React.FC = () => {
                 const aiResponse = await continueChat({ chatId, body: { message: currentInput } }).unwrap();
                 const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
                 setMessages(prev => [...prev, { sender: 'bot', text: '', isTyping: true }]);
-                await typeMessage(botMessage);
+                await typeMessage(botMessage, chatId);
                 setIsAIResponding(false);
             } catch (error: any) {
                 console.error(error);
@@ -154,7 +196,8 @@ const ChatComponent: React.FC = () => {
     }, [messages]);
 
     return (
-        <div className="relative flex flex-col h-screen w-full pt-24">
+        // Add key prop to force remount when chatId changes
+        <div key={chatId} className="relative flex flex-col h-screen w-full pt-24">
             {isNewChat ? (
                 <div className="flex-1 flex flex-col items-center justify-center px-4">
                     <div className="max-w-2xl w-full space-y-8 text-center p-8">
