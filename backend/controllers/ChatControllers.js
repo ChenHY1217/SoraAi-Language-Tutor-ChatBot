@@ -2,7 +2,7 @@ import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import generateSummaryTitle from "../gptRequests/generateTitle.js";
-import { waitingForAIResponse } from "../gptRequests/AIresponse.js";
+import { waitingForAIResponse } from "../gptRequests/aiResponse.js";
 
 // @desc    Get 20 most recent chats for a user
 // @route   GET /api/chats

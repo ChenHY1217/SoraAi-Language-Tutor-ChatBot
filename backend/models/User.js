@@ -16,12 +16,24 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
-    targetLanguages: [String],
-    learningProgress: {
-        vocabulary: Number,
-        grammarLevel: Number,
-    },
+    targetLanguages: [{
+        language: {
+            type: String,
+            required: true
+        },
+        learningProgress: {
+            vocabulary: {
+                type: Number,
+                default: 0
+            },
+            grammarLevel: {
+                type: Number,
+                default: 0
+            }
+        }
+    }],
     chatHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chats' }], // Ensure the model name matches the one used in Chat.js
+    quizHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quizzes' }], // Ensure the model name matches the one used in Quiz.js
     isAdmin: { 
         type: Boolean, 
         required: true, 

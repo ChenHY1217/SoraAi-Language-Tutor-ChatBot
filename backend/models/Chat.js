@@ -14,6 +14,10 @@ const chatSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    language: {
+        type: String,
+        required
+    },
     // Array of messages, each containing a sender and message
     messages: [
         {

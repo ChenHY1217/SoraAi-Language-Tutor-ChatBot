@@ -1,15 +1,15 @@
 import openai from '../openai.js';
 import META_PROMPT from '../prompts/meta.js';
 
-// Function to generate a summary title for a chat session
-const generateSummaryTitle = async (messages) => {
+// Function to generate the language for a chat session
+const determineLanguage = async (message) => {
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
                 { role: "system", content: META_PROMPT },
-                { role: "system", content: "Generate a brief, one-line title for this chat session." },
-                { role: "user", content: `Title for chat about: ${messages[0]}` }
+                { role: "system", content: "Determine the target language the user is trying to learn during this chat session and return the language as one word" },
+                { role: "user", content: `Language for chat: ${message}` }
             ],
             temperature: 0.7,
             max_tokens: 30
@@ -17,9 +17,9 @@ const generateSummaryTitle = async (messages) => {
 
         return response.choices[0].message.content.trim().toUpperCase().replace(/["']/g, '');
     } catch (error) {
-        console.error('Title generation error:', error);
-        return Chat_Session;
+        console.error('Language determination error:', error);
+        return 'Chat_Session';
     }
 };
 
-export default generateSummaryTitle;
+export default determineLanguage;
