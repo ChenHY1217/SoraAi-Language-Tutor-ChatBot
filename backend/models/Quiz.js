@@ -35,7 +35,11 @@ const quizSchema = new mongoose.Schema({
             type: String,
             required: true
         }, 
-    }]
+    }],
+    score: {
+        type: Number,
+        required: true
+    }
 }, { timestamps: true });
 
 const Quiz = mongoose.model('Quizzes', quizSchema);
