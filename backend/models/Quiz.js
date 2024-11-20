@@ -12,6 +12,10 @@ const quizSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: 'grammar' | 'vocab',
+        required: true
+    },
     language: {
         type: String,
         required: true
@@ -38,7 +42,8 @@ const quizSchema = new mongoose.Schema({
     }],
     score: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     }
 }, { timestamps: true });
 

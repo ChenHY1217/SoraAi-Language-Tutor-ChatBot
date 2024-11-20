@@ -22,14 +22,30 @@ const userSchema = new mongoose.Schema({
             required: true
         },
         learningProgress: {
-            vocabulary: {
+            vocabularyLvl: {
                 type: Number,
-                default: 0
+                default: 0,
+                min: 0,
+                max: 10
             },
-            grammarLevel: {
+            vocabularyProgress: {
                 type: Number,
-                default: 0
-            }
+                default: 0,
+                min: 0,
+                max: 0.9
+            },
+            grammarLvl: {
+                type: Number,
+                default: 0,
+                min: 0,
+                max: 10
+            },
+            grammarProgress: {
+                type: Number,
+                default: 0,
+                min: 0,
+                max: 0.9
+            },
         }
     }],
     chatHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chats' }], // Ensure the model name matches the one used in Chat.js

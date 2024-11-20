@@ -1,4 +1,3 @@
-import User from "../models/User.js";
 import Quiz from "../models/Quiz.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import generateQuizQuestions from "../gptRequests/generateQuiz.js";
@@ -11,7 +10,7 @@ const getQuizzes = asyncHandler(async (req, res) => {
         const language = req.params.lang;
         const userId = req.user._id;
 
-        const user = await User.findById(userId);
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -32,25 +31,26 @@ const getQuizzes = asyncHandler(async (req, res) => {
 // @access  Private
 const createQuiz = asyncHandler(async (req, res) => {
     try {
-        const { language, vocabLvl, grammarLvl } = req.body;
+        const { type, language, vocabLvl, grammarLvl } = req.body;
         const userId = req.user._id;
 
-        const user = await User.findById(userId);
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
         // Generate questions using GPT
-        const questions = await generateQuizQuestions(language, vocabLvl, grammarLvl);
+        const questions = await generateQuizQuestions(type, language, vocabLvl, grammarLvl);
 
         // Create a title based on the language and levels
-        const title = `${language} Quiz - Vocab: ${vocabLvl}, Grammar: ${grammarLvl}`;
+        const title = `${language} ${type} Quiz - Vocab: ${vocabLvl}, Grammar: ${grammarLvl}`;
 
         // Create a new quiz
         const quiz = await Quiz.create({
             userId,
             title,
+            type,
             language,
             questions
         });
@@ -76,7 +76,7 @@ const answerQuiz = asyncHandler(async (req, res) => {
         const { quizId, answers } = req.body;
         const userId = req.user._id;
 
-        const user = await User.findById(userId);
+        const user = req.user;
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -91,20 +91,15 @@ const answerQuiz = asyncHandler(async (req, res) => {
         let score = 0;
 
         for (let i = 0; i < answers.length; i++) {
-
             if (answers[i] === quiz.questions[i].answer) {
                 score++;
             }
-
         }
 
         quiz.score = score;
         await quiz.save();
 
-        res.status(200).json({
-            questions: quiz.questions,
-            score           
-        });
+        res.status(201).json(quiz);
 
     } catch (error) {
         console.error('Error in answerQuiz:', error);
@@ -113,4 +108,4 @@ const answerQuiz = asyncHandler(async (req, res) => {
 });
 
 
-export { createQuiz };
+export { getQuizzes, createQuiz, answerQuiz };

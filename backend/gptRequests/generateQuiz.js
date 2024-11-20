@@ -1,7 +1,7 @@
 import openai from '../openai.js';
 import QUIZ_PROMPT from '../prompts/quiz.js';
 
-const generateQuizQuestions = async (language, vocabLevel, grammarLevel) => {
+const generateQuizQuestions = async (type, language, vocabLevel, grammarLevel) => {
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -9,7 +9,7 @@ const generateQuizQuestions = async (language, vocabLevel, grammarLevel) => {
                 { role: "system", content: QUIZ_PROMPT },
                 { 
                     role: "user", 
-                    content: `Generate a quiz targeting ${language}. Vocabulary level: ${vocabLevel}, Grammar level: ${grammarLevel}`
+                    content: `Generate a quiz targeting ${language}. Vocabulary level: ${vocabLevel}, Grammar level: ${grammarLevel}. This should be a ${type} quiz.`
                 }
             ],
             temperature: 0.7,

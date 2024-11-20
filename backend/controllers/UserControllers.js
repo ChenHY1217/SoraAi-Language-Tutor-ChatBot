@@ -98,7 +98,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @access  Private
 const getCurrentUserProfile = asyncHandler(async (req, res) => {
 
-    const user = await User.findById(req.user._id);
+    const user = req.user;
 
     if (user) {
         res.json({
@@ -118,7 +118,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
 // @access  Private
 const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 
-    const user = await User.findById(req.user._id);
+    const user = req.user;
 
     if (user) {
         user.username = req.body.username || user.username;

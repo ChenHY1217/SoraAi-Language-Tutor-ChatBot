@@ -10,7 +10,7 @@ import { waitingForAIResponse } from "../gptRequests/aiResponse.js";
 const getUserChats = asyncHandler(async (req, res) => {
     try {
         const userId = req.user._id;
-        const user = await User.findById(userId).populate({
+        const user = req.user.populate({
             path: "chatHistory",
             options: { sort: { createdAt: -1 }, limit: 20 },
         });
@@ -85,7 +85,7 @@ const createChat = asyncHandler(async (req, res) => {
     try {
         const { message } = req.body;
         const userId = req.user._id;
-        const user = await User.findById(userId);
+        const user = req.user;
 
         // Create a new chat session
         const chat = new Chat({
@@ -165,7 +165,7 @@ const deleteChatById = asyncHandler(async (req, res) => {
         }
 
         // Remove chat from user's chat history
-        const user = await User.findById(userId);
+        const user = req.user;
         user.chatHistory = user.chatHistory.filter(chat => chat.toString() !== chatId);
         await user.save();
 
@@ -186,11 +186,7 @@ const deleteChatById = asyncHandler(async (req, res) => {
 const clearChatHistory = asyncHandler(async (req, res) => {
     try {
         const userId = req.user._id;
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        const user = req.user;
 
         // Delete all chats belonging to the user
         await Chat.deleteMany({ userId: userId });
