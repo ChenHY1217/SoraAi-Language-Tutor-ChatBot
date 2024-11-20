@@ -7,11 +7,11 @@ const testGPT = asyncHandler(async (req, res) => {
     try {
         const { message } = req.body;
         const response = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: 'gpt-4',
             messages: [
-                { role: "system", content: META_PROMPT },
+                { role: 'system', content: META_PROMPT },
                 {
-                    role: "user",
+                    role: 'user',
                     content: message,
                 },
             ],
@@ -19,7 +19,7 @@ const testGPT = asyncHandler(async (req, res) => {
 
         res.json({
             message: response.choices[0].message,
-            response
+            response,
         });
     } catch (error) {
         console.log(error);
@@ -32,21 +32,26 @@ const waitingForAIResponse = async (message, previousMessages = []) => {
     try {
         // Only include last 5 messages for context to reduce tokens
         const recentMessages = previousMessages.slice(-5);
-        
+
         const formattedMessages = [
-            { role: "system", content: META_PROMPT },
-            ...recentMessages.map(msg => ({
+            { role: 'system', content: META_PROMPT },
+            ...recentMessages.map((msg) => ({
                 role: msg.sender === 'user' ? 'user' : 'assistant',
-                content: msg.message
+                content: msg.message,
             })),
-            { role: "user", content: message }
+            {
+                role: 'system',
+                content:
+                    'Make sure that the following message is related around learning the same language as the past messages, if there are any. If not, kindly prompt them to ask a different question about the current language or start a new chat about the new language.',
+            },
+            { role: 'user', content: message },
         ];
 
         const response = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
             messages: formattedMessages,
             temperature: 0.7,
-            presence_penalty: 0.1
+            presence_penalty: 0.1,
         });
 
         return {
@@ -54,7 +59,6 @@ const waitingForAIResponse = async (message, previousMessages = []) => {
             message: response.choices[0].message.content,
             timestamp: Date.now(),
         };
-
     } catch (error) {
         console.error('AI response error:', error);
         return {

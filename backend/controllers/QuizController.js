@@ -74,7 +74,6 @@ const createQuiz = asyncHandler(async (req, res) => {
 const answerQuiz = asyncHandler(async (req, res) => {
     try {
         const { quizId, answers } = req.body;
-        const userId = req.user._id;
 
         const user = req.user;
 

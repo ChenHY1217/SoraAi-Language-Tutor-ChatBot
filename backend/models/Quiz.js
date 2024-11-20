@@ -13,7 +13,8 @@ const quizSchema = new mongoose.Schema({
         required: true
     },
     type: {
-        type: 'grammar' | 'vocab',
+        type: String,
+        enum: ['grammar', 'vocab'],
         required: true
     },
     language: {

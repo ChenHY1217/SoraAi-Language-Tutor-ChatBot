@@ -24,12 +24,12 @@ const getProgress = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update user progress
-// @route   PUT /api/progress/:lang
+// @route   PATCH /api/progress/:lang
 // @access  Private
 const updateProgress = asyncHandler(async (req, res) => {
     try {
         const { language } = req.params.lang;
-        const { type, score, questions } = req.body;
+        const { type, score } = req.body;
         const user = req.user;
 
         const targetLanguage = user.targetLanguages.find((targetLang) => targetLang.language === language);

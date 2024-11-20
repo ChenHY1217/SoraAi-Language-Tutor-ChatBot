@@ -42,7 +42,6 @@ const ChatComponent: React.FC = () => {
     const currentChatRef = useRef<string | undefined>(chatId);
 
     // Load chat messages into state
-    // Also clear messages if chatId is undefined or location is '/'
     useEffect(() => {
         if (chatData && chatData.messages) {
             const formattedMessages = chatData.messages.map((msg: any) => ({
@@ -51,23 +50,22 @@ const ChatComponent: React.FC = () => {
             }));
             setMessages(formattedMessages);
         }
-        if (!chatId || location.pathname === '/') {
-            setMessages([]);
-            chatId = undefined;
-        }
-    }, [chatData, chatId, location]);
+    }, [chatData]);
 
     // Update currentChatRef when chatId changes
     useEffect(() => {
-        setMessages([]);
         currentChatRef.current = chatId;
+        // Only clear messages when navigating to home
+        if (!chatId || location.pathname === '/') {
+            setMessages([]);
+        }
         // Cleanup: abort any ongoing typing animation when switching chats
         return () => {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
             }
         };
-    }, [chatId]);
+    }, [chatId, location.pathname]);
 
     // Typing animation for bot messages
     const typeMessage = async (text: string, targetChatId: string | undefined) => {

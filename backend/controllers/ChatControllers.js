@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import generateSummaryTitle from "../gptRequests/generateTitle.js";
 import { waitingForAIResponse } from "../gptRequests/aiResponse.js";
+import determineLanguage from "../gptRequests/determineLanguage.js";
 
 // @desc    Get 20 most recent chats for a user
 // @route   GET /api/chats
@@ -10,7 +11,7 @@ import { waitingForAIResponse } from "../gptRequests/aiResponse.js";
 const getUserChats = asyncHandler(async (req, res) => {
     try {
         const userId = req.user._id;
-        const user = req.user.populate({
+        const user = await req.user.populate({
             path: "chatHistory",
             options: { sort: { createdAt: -1 }, limit: 20 },
         });
@@ -91,6 +92,7 @@ const createChat = asyncHandler(async (req, res) => {
         const chat = new Chat({
             userId: userId,
             title: await generateSummaryTitle([message]),
+            language: await determineLanguage(message),
             messages: [{ sender: "user", message: message, timestamp: Date.now() }],
         });
 
@@ -106,6 +108,22 @@ const createChat = asyncHandler(async (req, res) => {
         // Update chat session with bot response
         chat.messages.push(botMessage);
         await chat.save();
+
+        // Update Target Languages and Start Learning Progress for User
+        const targetLanguage = user.targetLanguages.find((targetLang) => targetLang.language === chat.language);
+
+        if (!targetLanguage) {
+            user.targetLanguages.push({
+                language: chat.language,
+                learningProgress: {
+                    vocabularyLvl: 0,
+                    vocabularyProgress: 0,
+                    grammarLvl: 0,
+                    grammarProgress: 0
+                }
+            });
+            await user.save();
+        }
 
         res.json(chat);
 
