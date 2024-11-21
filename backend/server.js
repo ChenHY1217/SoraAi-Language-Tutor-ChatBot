@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 app.use('/api/users', UserRoutes);
 app.use('/api/chats', ChatRoutes);
 app.use('/api/quizzes', QuizRoutes);
-app.use('/api/progess', ProgressRoutes);
+app.use('/api/progress', ProgressRoutes);
 
 // Starting server
 app.listen(PORT, console.log('Server is running on port 5000'));

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { 
     useCreateChatMutation,
@@ -16,7 +16,6 @@ interface Message {
 }
 
 const ChatComponent: React.FC = () => {
-
     let { chatId } = useParams();
     const location = useLocation();
     const [messages, setMessages] = useState<Message[]>([]);
@@ -32,11 +31,13 @@ const ChatComponent: React.FC = () => {
         chatId ?? 'skip',
         { 
             skip: !chatId,
-            refetchOnMountOrArgChange: true
+            refetchOnMountOrArgChange: true,
+            refetchOnFocus: false,
+            refetchOnReconnect: false
         }
     );
 
-    const isNewChat = (!chatId || location.pathname === '/') && messages.length === 0;
+    const isNewChat = !chatId || location.pathname === '/';
 
     const abortControllerRef = useRef<AbortController | null>(null);
     const currentChatRef = useRef<string | undefined>(chatId);
@@ -44,22 +45,35 @@ const ChatComponent: React.FC = () => {
     // Load chat messages into state
     useEffect(() => {
         if (chatData && chatData.messages) {
+            console.log('ChatData updated:', {
+                trigger: 'useEffect',
+                chatId,
+                messageCount: chatData.messages.length,
+                language: chatData.language
+            });
+            
             const formattedMessages = chatData.messages.map((msg: any) => ({
                 sender: msg.sender,
                 text: msg.message
             }));
             setMessages(formattedMessages);
         }
-    }, [chatData]);
+    }, [chatData]); // Add proper dependencies
 
     // Update currentChatRef when chatId changes
     useEffect(() => {
         currentChatRef.current = chatId;
-        // Only clear messages when navigating to home
+        // Reset states when navigating to home
         if (!chatId || location.pathname === '/') {
             setMessages([]);
+
+            setInput('');  // Clear input field
+            if (textareaRef.current) {
+                textareaRef.current.style.height = '48px';
+                setInputHeight(48);
+            }
         }
-        // Cleanup: abort any ongoing typing animation when switching chats
+        // Cleanup: abort any ongoing typing animation
         return () => {
             if (abortControllerRef.current) {
                 abortControllerRef.current.abort();
@@ -149,6 +163,7 @@ const ChatComponent: React.FC = () => {
                 setIsAIResponding(true);
                 
                 const aiResponse = await createChat({message: currentInput}).unwrap();
+
                 const newChatId = aiResponse._id;
                 // Update chatId and URL before adding bot message
                 chatId = newChatId;
@@ -194,8 +209,7 @@ const ChatComponent: React.FC = () => {
     }, [messages]);
 
     return (
-        // Add key prop to force remount when chatId changes
-        <div key={chatId} className="relative flex flex-col h-screen w-full pt-24">
+        <div key={`${chatId}-${location.key}`} className="relative flex flex-col h-screen w-full pt-24">
             {isNewChat ? (
                 <div className="flex-1 flex flex-col items-center justify-center px-4">
                     <div className="max-w-2xl w-full space-y-8 text-center p-8">

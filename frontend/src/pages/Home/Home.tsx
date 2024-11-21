@@ -7,6 +7,7 @@ import ChatSection from './ChatSection.tsx'
 import Sidebar from './Sidebar.tsx'
 import NewChatIcon from '../../components/NewChatIcon'
 import backgroundImage from '../../assets/skyWithClouds.webp'
+import ProgressBar from './ProgressBar.tsx'
 
 const Home = () => {
 
@@ -31,6 +32,7 @@ const Home = () => {
              }}>
             {profileOn && <Profile />}
             <IconNav />
+            <ProgressBar />
             <div className="flex flex-col md:flex-row">
                 <Sidebar />
                 <ChatSection />

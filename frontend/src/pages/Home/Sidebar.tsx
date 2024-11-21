@@ -1,9 +1,10 @@
 import { useGetChatsQuery, useDeleteChatByIdMutation, useClearChatHistoryMutation } from '../../app/api/chats';
-import { HiMenuAlt2, HiX } from 'react-icons/hi';
+import { HiMenuAlt2, HiX, HiPlus } from 'react-icons/hi';
 import Loader from '../../components/Loader';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Modal from '../../components/Modal';
+import { useNewChat } from '../../hooks/useNewChat';
 
 const Sidebar: React.FC = () => {
     const { data: userData, error, isLoading } = useGetChatsQuery({}, {
@@ -16,6 +17,7 @@ const Sidebar: React.FC = () => {
     const [deleteChatById] = useDeleteChatByIdMutation();
     const [clearChatHistory] = useClearChatHistoryMutation();
     const navigate = useNavigate();
+    const { startNewChat } = useNewChat();
 
     const [modalConfig, setModalConfig] = useState({
         isOpen: false,
@@ -29,8 +31,8 @@ const Sidebar: React.FC = () => {
     if (error) return <div>Error loading chats</div>;
 
     // Handle chat click and update chat Section
-    const handleChatClick = (chatId: string) => {
-        navigate(`/chat/${chatId}`);
+    const handleChatClick = (chat: any) => {
+        navigate(`/chat/${chat._id}`);
     };
 
     // Update the handleDeleteChat to use a MouseEvent with HTMLButtonElement
@@ -77,6 +79,21 @@ const Sidebar: React.FC = () => {
                 >
                     <div className='relative flex-1 overflow-y-auto pt-10'>
                         <h2 className="text-2xl font-semibold mb-8 mt-2 text-center text-gray-800/90">Chat History</h2>
+                        <button
+                            onClick={startNewChat}
+                            className="w-full mb-4 flex items-center justify-center gap-3 py-3 px-4 
+                                bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700
+                                text-white rounded-xl shadow-md hover:shadow-lg
+                                transform transition-all duration-200 hover:-translate-y-0.5
+                                group"
+                        >
+                            <HiPlus 
+                                size={20} 
+                                className="transform transition-all duration-300 
+                                    group-hover:rotate-180"
+                            />
+                            <span className="font-medium">New Chat</span>
+                        </button>
                         <ul className='flex flex-col gap-2'>
                             {chats.map((chat: { _id: string; title: string }) => (
                                 <li 
@@ -85,7 +102,7 @@ const Sidebar: React.FC = () => {
                                     title={chat.title}
                                 >
                                     <div 
-                                        onClick={() => handleChatClick(chat._id)}
+                                        onClick={() => handleChatClick(chat)}
                                         className="relative overflow-hidden p-3 bg-white/5 hover:bg-white/15 rounded-xl transition-all duration-300 border border-white/5 hover:border-white/10 shadow-sm"
                                     >
                                         <span className="block truncate text-gray-800/80 font-medium text-sm pr-8">
@@ -121,6 +138,7 @@ const Sidebar: React.FC = () => {
                     ? "Are you sure you want to clear all chat history? This action cannot be undone."
                     : "Are you sure you want to delete this chat? This action cannot be undone."}
             />
+
         </>
     );
 };

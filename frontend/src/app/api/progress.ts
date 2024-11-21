@@ -19,3 +19,5 @@ export const progressApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 });
+
+export const { useGetProgressQuery, useUpdateProgressMutation } = progressApiSlice;

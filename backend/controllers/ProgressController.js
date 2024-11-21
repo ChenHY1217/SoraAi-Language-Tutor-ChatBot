@@ -6,7 +6,7 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 // @access  Private
 const getProgress = asyncHandler(async (req, res) => {
     try {
-        const { language } = req.params.lang;
+        const language = req.params.lang;
         const user = req.user;
 
         const targetLanguage = user.targetLanguages.find((targetLang) => targetLang.language === language);
@@ -28,7 +28,7 @@ const getProgress = asyncHandler(async (req, res) => {
 // @access  Private
 const updateProgress = asyncHandler(async (req, res) => {
     try {
-        const { language } = req.params.lang;
+        const language = req.params.lang;
         const { type, score } = req.body;
         const user = req.user;
 
