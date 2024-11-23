@@ -5,17 +5,14 @@ const QUIZ_PROMPT = `
     "questions": [
       {
         "question": "The question text",
-        "choices": [
-          {"choice": "First option"},
-          {"choice": "Second option"},
-          {"choice": "Third option"},
-          {"choice": "Fourth option"}
-        ],
+        "choices": ["Choice 1", "Choice 2", "Choice 3", "Choice 4"], ],
         "answer": "The correct answer text",
-        "solution": "Brief explanation why this is correct",
+        "explanation": "Brief explanation why this is correct",
       }
     ]
   }
+
+  Each question should have 4 choices and only one correct answer. Replace the "Choice 1", "Choice 2", "Choice 3", "Choice 4" with generated choices for the question.
 
   Focus on making questions that test either grammar or vocab depending on the specified quiz type and make it appropriate for the specified levels.
   Make sure the questions are challenging but fair for the given level.

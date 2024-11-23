@@ -17,6 +17,10 @@ const quizSchema = new mongoose.Schema({
         enum: ['grammar', 'vocab'],
         required: true
     },
+    level:{
+        type: Number,
+        required: true
+    },
     language: {
         type: String,
         required: true
@@ -26,17 +30,12 @@ const quizSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        choices: [{
-            choice: {
-                type: String,
-                required: true
-            },            
-        }],
+        choices: [String], // Array of strings for choices
         answer: { // The correct answer
             type: String,
             required: true
         },
-        solution: { // Explanation why the answer is correct
+        explanation: { // Explanation why the answer is correct
             type: String,
             required: true
         }, 

@@ -45,7 +45,8 @@ const Register: React.FC = () => {
             return;
         } else {
             try{
-                const response = await registerApiCall({username, email, password}).unwrap();
+
+                const response = await registerApiCall({username, email: email.toLocaleLowerCase(), password}).unwrap();
 
                 // Simulate a login delay and then reset state (for the example)
                 setTimeout(() => {

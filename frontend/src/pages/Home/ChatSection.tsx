@@ -8,6 +8,7 @@ import {
 } from '../../app/api/chats';
 import { IoSendSharp } from 'react-icons/io5';
 import Loader from '../../components/Loader';
+import Quiz from '../../components/Quiz';
 
 interface Message {
     sender: 'user' | 'bot',
@@ -16,13 +17,13 @@ interface Message {
 }
 
 const ChatComponent: React.FC = () => {
-    let { chatId } = useParams();
+    const { chatId } = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState<string>('');
     const [inputHeight, setInputHeight] = useState<number>(0);
-    const [isAIResponding, setIsAIResponding] = useState<boolean>(false);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [isAIResponding, setIsAIResponding] = useState<boolean>(false);    const textareaRef = useRef<HTMLTextAreaElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const [createChat] = useCreateChatMutation();
@@ -32,15 +33,28 @@ const ChatComponent: React.FC = () => {
         { 
             skip: !chatId,
             refetchOnMountOrArgChange: true,
-            refetchOnFocus: false,
-            refetchOnReconnect: false
         }
     );
 
-    const isNewChat = !chatId || location.pathname === '/';
+    const isNewChat = (!chatId || location.pathname === '/') && messages.length === 0;
 
     const abortControllerRef = useRef<AbortController | null>(null);
     const currentChatRef = useRef<string | undefined>(chatId);
+
+    // Update currentChatRef when chatId changes
+    useEffect(() => {
+        currentChatRef.current = chatId;
+        // Reset states when navigating to home
+        if (!chatId || location.pathname === '/') {
+            setMessages([]);
+        }
+        // Cleanup: abort any ongoing typing animation
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
+    }, [chatId, location.pathname]);
 
     // Load chat messages into state
     useEffect(() => {
@@ -59,27 +73,6 @@ const ChatComponent: React.FC = () => {
             setMessages(formattedMessages);
         }
     }, [chatData]); // Add proper dependencies
-
-    // Update currentChatRef when chatId changes
-    useEffect(() => {
-        currentChatRef.current = chatId;
-        // Reset states when navigating to home
-        if (!chatId || location.pathname === '/') {
-            setMessages([]);
-
-            setInput('');  // Clear input field
-            if (textareaRef.current) {
-                textareaRef.current.style.height = '48px';
-                setInputHeight(48);
-            }
-        }
-        // Cleanup: abort any ongoing typing animation
-        return () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
-        };
-    }, [chatId, location.pathname]);
 
     // Typing animation for bot messages
     const typeMessage = async (text: string, targetChatId: string | undefined) => {
@@ -144,12 +137,10 @@ const ChatComponent: React.FC = () => {
     // Creates new chat if there are no previous messages
     // Continues chat if there are previous messages
     const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-        
         e.preventDefault();
         const currentInput = input.trim();
         if (currentInput === '') return;
         
-        // Clear input immediately
         setInput('');
         if (textareaRef.current) {
             textareaRef.current.style.height = '48px';
@@ -163,20 +154,24 @@ const ChatComponent: React.FC = () => {
                 setIsAIResponding(true);
                 
                 const aiResponse = await createChat({message: currentInput}).unwrap();
-
                 const newChatId = aiResponse._id;
-                // Update chatId and URL before adding bot message
-                chatId = newChatId;
+                
                 currentChatRef.current = newChatId;
-                window.history.pushState({}, '', `/chat/${newChatId}`);
 
-                const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
+                // Add empty bot message first
                 setMessages(prev => [...prev, { sender: 'bot', text: '', isTyping: true }]);
+                
+                // Get the bot's response and animate it
+                const botMessage = aiResponse.messages[aiResponse.messages.length - 1].message;
                 await typeMessage(botMessage, newChatId);
                 setIsAIResponding(false);
+
+                navigate(`/chat/${newChatId}`);  // Replace window.history.pushState with this
+
             } catch (error: any) {
                 console.error(error);
                 toast.error(error?.data?.message || "Failed to receive response from AI");
+                setIsAIResponding(false);
             }
         }
 
@@ -209,7 +204,8 @@ const ChatComponent: React.FC = () => {
     }, [messages]);
 
     return (
-        <div key={`${chatId}-${location.key}`} className="relative flex flex-col h-screen w-full pt-24">
+        <div key={`${chatId}-${location.key}`} className="relative flex flex-col h-screen w-full pt-28 z-0">
+            <Quiz />
             {isNewChat ? (
                 <div className="flex-1 flex flex-col items-center justify-center px-4">
                     <div className="max-w-2xl w-full space-y-8 text-center p-8">

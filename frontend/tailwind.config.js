@@ -30,6 +30,9 @@ export default {
       borderWidth: {
         '3': '3px',
       },
+      animation: {
+        'bounce-slow': 'bounce 3s infinite',
+      },
     },
   },
   plugins: [

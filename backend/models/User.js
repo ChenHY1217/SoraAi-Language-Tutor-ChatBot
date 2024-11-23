@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: 0,
                 min: 0,
-                max: 0.9
+                max: 1
             },
             grammarLvl: {
                 type: Number,
@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
                 type: Number,
                 default: 0,
                 min: 0,
-                max: 0.9
+                max: 1
             },
         }
     }],

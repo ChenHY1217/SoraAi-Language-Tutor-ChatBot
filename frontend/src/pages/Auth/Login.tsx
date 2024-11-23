@@ -38,7 +38,8 @@ const Login: React.FC = () => {
     dispatch(setProfile(false));
     
     try{
-      const response = await loginApiCall({ email, password }).unwrap();
+
+      const response = await loginApiCall({ email: email.toLocaleLowerCase(), password }).unwrap();
     
       // Simulate a login delay and then reset state (for the example)
       setTimeout(() => {
@@ -74,7 +75,7 @@ const Login: React.FC = () => {
           }`}
         >
           <span className="font-bold">SoraAi</span>
-          <p className="text-lg font-medium mt-2">Your AI-powered language learning companion.</p>
+          <p className="text-lg font-medium mt-2 text-gray-700">Your AI-powered language learning companion.</p>
         </div>
 
         {/* Login form */}

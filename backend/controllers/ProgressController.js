@@ -1,4 +1,3 @@
-import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
 // @desc    Get user progress

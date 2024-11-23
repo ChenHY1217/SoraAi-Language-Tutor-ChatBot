@@ -12,6 +12,14 @@ import { useLogoutMutation } from "../app/api/users";
 import { logout } from "../app/features/auth/authSlice";
 import { toggleProfile, setProfile } from "../app/features/profile/profileSlice";
 
+///////////////////////////////////////////////////
+// This component is not being used currently.
+// Replaced by IconNav Component in ../pages/Home/IconNav.tsx
+
+// This component is a navigation bar that appears at the bottom of the screen.
+
+
+
 const Navigation: React.FC = () => {
     const { userInfo } = useAppSelector((state) => state.auth);
     const profileOn = useAppSelector((state) => state.profile);
