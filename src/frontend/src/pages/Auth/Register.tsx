@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { useRegisterMutation } from "../../app/api/users";
 import Loader from "../../components/Loader";
-import backgroundImage from "../../../../public/bg/skyWithClouds.webp";
+import backgroundImage from "../../../../../public/bg/skyWithClouds.webp";
 
 const Register: React.FC = () => {
     // Form values

@@ -6,7 +6,7 @@ import Profile from '../Auth/Profile.tsx'
 import ChatSection from './ChatSection.tsx'
 import Sidebar from './Sidebar.tsx'
 import NewChatIcon from '../../components/NewChatIcon'
-import backgroundImage from '../../../../public/bg/skyWithClouds.webp'
+import backgroundImage from '../../../../../public/bg/skyWithClouds.webp'
 import ProgressBar from './ProgressBar.tsx'
 
 const Home: React.FC = () => {

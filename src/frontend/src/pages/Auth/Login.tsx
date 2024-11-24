@@ -6,7 +6,7 @@ import { useLoginMutation } from "../../app/api/users";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { motion } from "framer-motion";
-import backgroundImage from "../../../../public/bg/skyWithClouds.webp";
+import backgroundImage from "../../../../../public/bg/skyWithClouds.webp";
 
 const Login: React.FC = () => {
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
