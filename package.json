@@ -1,0 +1,15 @@
+{
+  "name": "soraai-language-tutor-chatbot",
+  "version": "1.0.0",
+  "description": "Behold a chatbot specialized in transforming you to the next foreign language expert. The journey begins today!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fullstack": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "cd src/frontend && npm run dev",
+    "backend": "nodemon src/backend/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
