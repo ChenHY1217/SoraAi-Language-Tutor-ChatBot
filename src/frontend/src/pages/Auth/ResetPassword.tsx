@@ -45,16 +45,16 @@ const ResetPassword: React.FC = () => {
                  backgroundBlendMode: 'overlay'
              }}>
             <div className="max-w-md w-full mx-4 p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl">
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
                     Set New Password
                 </h2>
-                <p className="text-gray-600 text-center mb-8">
+                <p className="text-gray-700 text-center mb-8">
                     Please enter your new password below.
                 </p>
 
                 <motion.form 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ 
                       ease: "easeOut",
                       duration: 0.3
@@ -62,7 +62,7 @@ const ResetPassword: React.FC = () => {
                     onSubmit={handleSubmit} 
                     className="space-y-6">
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-900 mb-1">
                             New Password
                         </label>
                         <input
@@ -76,7 +76,7 @@ const ResetPassword: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-900 mb-1">
                             Confirm Password
                         </label>
                         <input

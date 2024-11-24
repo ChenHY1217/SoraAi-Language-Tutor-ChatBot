@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
         refetchOnMountOrArgChange: true,
         refetchOnFocus: true,
         refetchOnReconnect: true,
-        pollingInterval: 3000  // Poll every 3 seconds
+        // pollingInterval: 3000  // Poll every 3 seconds
     });
     const [deleteChatById] = useDeleteChatByIdMutation();
     const [clearChatHistory] = useClearChatHistoryMutation();

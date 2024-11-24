@@ -36,16 +36,16 @@ const ForgotPassword: React.FC = () => {
                  backgroundBlendMode: 'overlay'
              }}>
             <div className="max-w-md w-full mx-4 p-8 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl">
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
                     Reset Password
                 </h2>
-                <p className="text-gray-600 text-center mb-8">
+                <p className="text-gray-700 text-center mb-8">
                     Enter your email address and we'll send you instructions to reset your password.
                 </p>
                 
                 <motion.form 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ 
                       ease: "easeOut",
                       duration: 0.3
@@ -53,7 +53,7 @@ const ForgotPassword: React.FC = () => {
                     onSubmit={handleSubmit} 
                     className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1">
                             Email Address
                         </label>
                         <input

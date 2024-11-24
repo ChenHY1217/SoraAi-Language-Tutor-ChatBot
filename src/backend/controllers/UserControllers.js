@@ -58,6 +58,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
     // Check if the user exists and the password is correct
     if (user && (await bcryptjs.compare(password, user.password))) {
+
+        // // Add token creation logging
+        // console.log('Creating token for user:', user._id);
+
         createToken(res, user._id);
         res.json({
             _id: user._id,

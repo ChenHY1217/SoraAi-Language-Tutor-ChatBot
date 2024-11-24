@@ -37,6 +37,7 @@ const ChatComponent: React.FC = () => {
         { 
             skip: !chatId,
             refetchOnMountOrArgChange: true,
+            refetchOnReconnect: true
         }
     );
 
@@ -57,23 +58,18 @@ const ChatComponent: React.FC = () => {
         };
     }, [chatId, location.pathname]);
 
-    // Load chat messages into state
     useEffect(() => {
-        if (chatData && chatData.messages) {
-            // console.log('ChatData updated:', {
-            //     trigger: 'useEffect',
-            //     chatId,
-            //     messageCount: chatData.messages.length,
-            //     language: chatData.language
-            // });
-            
+        // Reset messages when navigating to a new chat
+        if (chatId && chatData?.messages) {
             const formattedMessages = chatData.messages.map((msg: any) => ({
                 sender: msg.sender,
                 text: msg.message
             }));
             setMessages(formattedMessages);
+        } else {
+            setMessages([]); // Clear messages if no chat data
         }
-    }, [chatData]); // Add proper dependencies
+    }, [chatId, chatData]); // Add chatId as dependency
 
     // Typing animation for bot messages
     const typeMessage = async (text: string, targetChatId: string | undefined) => {
@@ -203,6 +199,15 @@ const ChatComponent: React.FC = () => {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    // Error handling
+    if (isChatLoading) {
+        return <Loader />;
+    }
+      
+    if (!chatData && chatId) {
+        return <div>Failed to load chat messages</div>;
+    }
 
     return (
         <div key={`${chatId}-${location.key}`} className="relative flex flex-col h-screen w-full pt-28 z-0">

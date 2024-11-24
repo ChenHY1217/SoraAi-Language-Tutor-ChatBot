@@ -81,8 +81,8 @@ const Login: React.FC = () => {
 
         {/* Login form */}
         <motion.form
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: isLoggingIn ? 0 : 1, scale: isLoggingIn ? 0.95 : 1 }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: isLoggingIn ? 0 : 1, y: isLoggingIn ? 50 : 0 }}
           transition={{ 
             ease: "easeOut",
             duration: 0.3
@@ -129,13 +129,13 @@ const Login: React.FC = () => {
           
           <div className="text-gray-900 mt-6 text-left">
             Don't have an account?{" "}
-            <Link to={redirect ? `/register?redirect=${redirect}` : "/register"} className="text-secondary-100 hover:underline">
+            <Link to={redirect ? `/register?redirect=${redirect}` : "/register"} className="text-secondary-500 hover:underline">
               Register
             </Link>
           </div>
           <div className="text-gray-900 text-left mt-4">
             Forgot your password?{" "}
-            <Link to={redirect ? `/forgot-password?redirect=${redirect}` : "/forgot"} className="text-secondary-100 hover:underline">
+            <Link to={redirect ? `/forgot-password?redirect=${redirect}` : "/forgot"} className="text-secondary-500 hover:underline">
               Click Here
             </Link>
           </div>

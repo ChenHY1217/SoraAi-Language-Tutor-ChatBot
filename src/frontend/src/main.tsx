@@ -3,6 +3,7 @@ import store from './app/store.ts'
 import { Provider } from 'react-redux'
 import { Route, RouterProvider, createRoutesFromElements } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
+import { disableReactDevTools } from '@fvilers/disable-react-devtools'
 import './index.css'
 
 import App from './App.tsx'
@@ -28,6 +29,8 @@ const router = createBrowserRouter(
     
   )
 )
+
+if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
