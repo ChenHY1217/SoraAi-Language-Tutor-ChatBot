@@ -59,12 +59,12 @@ const ChatComponent: React.FC = () => {
     // Load chat messages into state
     useEffect(() => {
         if (chatData && chatData.messages) {
-            console.log('ChatData updated:', {
-                trigger: 'useEffect',
-                chatId,
-                messageCount: chatData.messages.length,
-                language: chatData.language
-            });
+            // console.log('ChatData updated:', {
+            //     trigger: 'useEffect',
+            //     chatId,
+            //     messageCount: chatData.messages.length,
+            //     language: chatData.language
+            // });
             
             const formattedMessages = chatData.messages.map((msg: any) => ({
                 sender: msg.sender,

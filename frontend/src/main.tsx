@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import store from './app/store.ts'
 import { Provider } from 'react-redux'
-import { Route, RouterProvider, createRoutesFromElements, useLocation } from 'react-router'
+import { Route, RouterProvider, createRoutesFromElements } from 'react-router'
 import { createBrowserRouter } from 'react-router-dom'
 import './index.css'
 
@@ -11,21 +11,21 @@ import Login from './pages/Auth/Login.tsx'
 import Register from './pages/Auth/Register.tsx'
 import ForgotPassword from './pages/Auth/ForgotPassword.tsx'
 import ResetPassword from './pages/Auth/ResetPassword.tsx'
-
-// Authorization
-
-// Restricted
+import Error404 from './pages/Error/Error404.tsx'
+import ErrorBoundary from './pages/Error/ErrorBoundary.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="/" element={<App />} errorElement={<ErrorBoundary />}>
       <Route index={true} path='/' element={<Home/>}/>
       <Route path='/chat/:chatId' element={<Home/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>} />
       <Route path='/forgot-password' element={<ForgotPassword/>} />
       <Route path="/reset-password/:token" element={<ResetPassword />} />
+      <Route path="*" element={<Error404 />} />
     </Route>
+    
   )
 )
 

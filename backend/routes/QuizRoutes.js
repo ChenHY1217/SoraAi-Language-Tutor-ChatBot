@@ -8,7 +8,7 @@ import { authenticate, authorizeAdmin } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/:lang', authenticate, authorizeAdmin, getQuizzes);
+router.get('/:lang', authenticate, getQuizzes);
 
 router.post('/create', authenticate, createQuiz);
 router.patch('/:quizId/answer', authenticate, answerQuiz);
