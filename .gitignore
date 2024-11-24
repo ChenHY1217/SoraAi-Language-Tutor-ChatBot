@@ -1,3 +1,5 @@
 /node_modules
-/.env
-/Pathway.txt
+.env
+Pathway.txt
+.vscode
+build
