@@ -2,4 +2,6 @@
 .env
 Pathway.txt
 .vscode
+.DS_Store
+dist
 build
