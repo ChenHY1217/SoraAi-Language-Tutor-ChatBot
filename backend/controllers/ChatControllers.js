@@ -1,5 +1,4 @@
 import Chat from "../models/Chat.js";
-import User from "../models/User.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 import generateSummaryTitle from "../gptRequests/generateTitle.js";
 import { waitingForAIResponse } from "../gptRequests/aiResponse.js";
@@ -109,7 +108,7 @@ const createChat = asyncHandler(async (req, res) => {
         chat.messages.push(botMessage);
         await chat.save();
 
-        // Update Target Languages and Start Learning Progress for User
+        // Update Target Languages and initialize Learning Progress for User
         const targetLanguage = user.targetLanguages.find((targetLang) => targetLang.language === chat.language);
 
         if (!targetLanguage) {

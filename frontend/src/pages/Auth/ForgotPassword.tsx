@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../../assets/skyWithClouds.webp';
+import backgroundImage from '../../../../public/bg/skyWithClouds.webp';
 import { useSendPasswordResetEmailMutation } from '../../app/api/users';
 import { motion } from 'framer-motion';
 
-const ForgotPassword = () => {
+const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 

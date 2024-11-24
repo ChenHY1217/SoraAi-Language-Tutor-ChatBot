@@ -7,23 +7,23 @@ import Modal from '../../components/Modal';
 import { useNewChat } from '../../hooks/useNewChat';
 
 const Sidebar: React.FC = () => {
+    const [modalConfig, setModalConfig] = useState({
+        isOpen: false,
+        chatId: '',
+        isClearAll: false
+    });
+    
+    const navigate = useNavigate();
+
     const { data: userData, error, isLoading } = useGetChatsQuery({}, {
         refetchOnMountOrArgChange: true,
         refetchOnFocus: true,
         refetchOnReconnect: true,
         pollingInterval: 3000  // Poll every 3 seconds
     });
-
-    const navigate = useNavigate();
     const [deleteChatById] = useDeleteChatByIdMutation();
     const [clearChatHistory] = useClearChatHistoryMutation();
     const { startNewChat } = useNewChat();
-
-    const [modalConfig, setModalConfig] = useState({
-        isOpen: false,
-        chatId: '',
-        isClearAll: false
-    });
 
     const chats = userData?.chatHistory || [];
 

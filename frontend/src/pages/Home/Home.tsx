@@ -6,14 +6,14 @@ import Profile from '../Auth/Profile.tsx'
 import ChatSection from './ChatSection.tsx'
 import Sidebar from './Sidebar.tsx'
 import NewChatIcon from '../../components/NewChatIcon'
-import backgroundImage from '../../assets/skyWithClouds.webp'
+import backgroundImage from '../../../../public/bg/skyWithClouds.webp'
 import ProgressBar from './ProgressBar.tsx'
 
-const Home = () => {
+const Home: React.FC = () => {
 
     const { userInfo } = useAppSelector((state) => state.auth);
     const profileOn = useAppSelector((state) => state.profile);
-    // Need to pass chatId from url to sidebar and chatsection components
+
     const navigate = useNavigate();
 
     useEffect(() => {

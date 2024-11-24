@@ -1,29 +1,19 @@
 import { useGetChatByIdQuery } from "../../app/api/chats";
 import { useGetProgressQuery } from "../../app/api/progress";
 import { useLocation } from "react-router";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { FaLevelUpAlt } from 'react-icons/fa';
 
-const ProgressBar = () => {
+const ProgressBar: React.FC = () => {
     const [isVisible, setIsVisible] = useState(true);
-    const location = useLocation();
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [levelUpAnimation, setLevelUpAnimation] = useState<{
         vocab: boolean;
         grammar: boolean;
     }>({ vocab: false, grammar: false });
     
-    // Update currentChatId when URL changes
-    useEffect(() => {
-        const pathParts = location.pathname.split('/');
-        const chatIdIndex = pathParts.indexOf('chat') + 1;
-        if (chatIdIndex > 0 && chatIdIndex < pathParts.length) {
-            setCurrentChatId(pathParts[chatIdIndex]);
-        } else {
-            setCurrentChatId(null);
-        }
-    }, [location.pathname]);
+    const location = useLocation();
 
     const { data: chatData, isLoading: isChatLoading } = useGetChatByIdQuery(
         currentChatId ?? 'skip',
@@ -34,6 +24,17 @@ const ProgressBar = () => {
         chatData?.language ?? 'skip',
         { skip: !chatData?.language }
     );
+
+    // Update currentChatId when URL changes
+    useEffect(() => {
+        const pathParts = location.pathname.split('/');
+        const chatIdIndex = pathParts.indexOf('chat') + 1;
+        if (chatIdIndex > 0 && chatIdIndex < pathParts.length) {
+            setCurrentChatId(pathParts[chatIdIndex]);
+        } else {
+            setCurrentChatId(null);
+        }
+    }, [location.pathname]);
 
     // Improved level change tracking
     useEffect(() => {

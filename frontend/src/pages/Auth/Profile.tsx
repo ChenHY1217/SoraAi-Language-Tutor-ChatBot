@@ -7,16 +7,16 @@ import { useProfileUpdateMutation } from "../../app/api/users";
 import { motion } from "framer-motion";
 import skywingsLogo from "../../assets/skywingsLogo.png";
 
-const Profile = () => {
+const Profile: React.FC = () => {
     const { userInfo } = useAppSelector((state) => state.auth);
     const [username, setUsername] = useState<string>(userInfo.username);
     const [email, setEmail] = useState<string>(userInfo.email);
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const [isUpdating, setIsUpdating] = useState<boolean>(false);
     
     const dispatch = useAppDispatch();
-    const [updateApiCall, { isLoading}] = useProfileUpdateMutation();
+
+    const [updateApiCall, { isLoading }] = useProfileUpdateMutation();
 
     useEffect(() => {
         if (userInfo) {
@@ -36,7 +36,6 @@ const Profile = () => {
             toast.error("Passwords do not match");
             return;
         } else {
-            setIsUpdating(true);
             try {
                 const response = await updateApiCall({ _id: userInfo._id, username, email, password }).unwrap();
                 if (response.error) {
@@ -53,7 +52,6 @@ const Profile = () => {
                     toast.error("An unknown error occurred");
                 }
             }
-            setIsUpdating(false);
         }
     };
 

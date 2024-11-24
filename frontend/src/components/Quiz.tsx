@@ -25,10 +25,10 @@ const Quiz: React.FC = () => {
     const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [previousLevels, setPreviousLevels] = useState<{ vocab: number, grammar: number } | null>(null);
+    // const [previousLevels, setPreviousLevels] = useState<{ vocab: number, grammar: number } | null>(null);
     const [activeExplanation, setActiveExplanation] = useState<number | null>(null);
     const [showHistory, setShowHistory] = useState<boolean>(false);
-    const [historyError, setHistoryError] = useState<string | null>(null);
+    // const [historyError, setHistoryError] = useState<string | null>(null);
 
     const { data: chatData } = useGetChatByIdQuery(
         chatId ?? 'skip', 
@@ -46,7 +46,7 @@ const Quiz: React.FC = () => {
         }
     );
 
-    const { data: quizHistory, isLoading: historyLoading, error: historyQueryError } = useGetQuizzesQuery(
+    const { data: quizHistory, isLoading: historyLoading } = useGetQuizzesQuery(
         chatData?.language ?? 'skip',
         {
             skip: !chatData?.language
@@ -60,7 +60,6 @@ const Quiz: React.FC = () => {
 
         // console.log(chatData?.language, progress?.vocabularyProgress, progress?.grammarProgress);
 
-
         if (!chatData?.language || progress?.vocabularyProgress === undefined || progress?.grammarProgress === undefined) {
             toast.error('Unable to start quiz. Missing required data.');
             return;
@@ -72,12 +71,12 @@ const Quiz: React.FC = () => {
             setIsSubmitted(false);
             setScore(0);
 
-            if (progress) {
-                setPreviousLevels({
-                    vocab: progress.vocabularyLvl,
-                    grammar: progress.grammarLvl
-                });
-            }
+            // if (progress) {
+            //     setPreviousLevels({
+            //         vocab: progress.vocabularyLvl,
+            //         grammar: progress.grammarLvl
+            //     });
+            // }
 
             const result = await createQuiz({
                 type: Math.random() > 0.5 ? "vocab" : "grammar",

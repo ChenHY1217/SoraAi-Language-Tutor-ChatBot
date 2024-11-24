@@ -18,13 +18,17 @@ interface Message {
 
 const ChatComponent: React.FC = () => {
     const { chatId } = useParams();
-    const location = useLocation();
-    const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState<string>('');
     const [inputHeight, setInputHeight] = useState<number>(0);
     const [isAIResponding, setIsAIResponding] = useState<boolean>(false);    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const abortControllerRef = useRef<AbortController | null>(null);
+    const currentChatRef = useRef<string | undefined>(chatId);
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [createChat] = useCreateChatMutation();
     const [continueChat] = useContinueChatMutation();
@@ -37,9 +41,6 @@ const ChatComponent: React.FC = () => {
     );
 
     const isNewChat = (!chatId || location.pathname === '/') && messages.length === 0;
-
-    const abortControllerRef = useRef<AbortController | null>(null);
-    const currentChatRef = useRef<string | undefined>(chatId);
 
     // Update currentChatRef when chatId changes
     useEffect(() => {

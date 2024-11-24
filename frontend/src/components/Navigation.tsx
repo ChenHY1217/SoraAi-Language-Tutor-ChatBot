@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
     AiOutlineHome,
     AiOutlineLogin,
-    AiOutlineLogout,
     AiOutlineUserAdd,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -17,9 +16,7 @@ import { toggleProfile, setProfile } from "../app/features/profile/profileSlice"
 // Replaced by IconNav Component in ../pages/Home/IconNav.tsx
 
 // This component is a navigation bar that appears at the bottom of the screen.
-
-
-
+// It contains links to the home page, login, and register pages.
 const Navigation: React.FC = () => {
     const { userInfo } = useAppSelector((state) => state.auth);
     const profileOn = useAppSelector((state) => state.profile);

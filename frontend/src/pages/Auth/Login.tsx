@@ -6,7 +6,7 @@ import { useLoginMutation } from "../../app/api/users";
 import { setCredentials } from "../../app/features/auth/authSlice";
 import { toggleProfile, setProfile } from "../../app/features/profile/profileSlice";
 import { motion } from "framer-motion";
-import backgroundImage from "../../assets/skyWithClouds.webp";
+import backgroundImage from "../../../../public/bg/skyWithClouds.webp";
 
 const Login: React.FC = () => {
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
@@ -19,6 +19,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const [loginApiCall, { isLoading }] = useLoginMutation();
+  
   // Redirect to home if already logged in
   const { search } = useLocation(); // Returns the current location object or url
   const sp = new URLSearchParams(search);

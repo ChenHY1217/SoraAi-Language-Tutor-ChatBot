@@ -1,7 +1,7 @@
 import { HiPlus } from 'react-icons/hi';
 import { useNewChat } from '../hooks/useNewChat.ts';
 
-const NewChatIcon = () => {
+const NewChatIcon: React.FC = () => {
     const { startNewChat } = useNewChat();
 
     return (

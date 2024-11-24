@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useResetPasswordMutation } from '../../app/api/users';
-import backgroundImage from '../../assets/skyWithClouds.webp';
+import backgroundImage from '../../../../public/bg/skyWithClouds.webp';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
