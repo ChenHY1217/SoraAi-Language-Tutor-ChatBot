@@ -13,7 +13,7 @@ const store = configureStore({
         [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware: any) => getDefaultMiddleware().concat(apiSlice.middleware),
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: false,
 });  
 
 setupListeners(store.dispatch);

@@ -30,7 +30,7 @@ const router = createBrowserRouter(
   )
 )
 
-if (process.env.NODE_ENV === 'production') disableReactDevTools();
+disableReactDevTools();
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
