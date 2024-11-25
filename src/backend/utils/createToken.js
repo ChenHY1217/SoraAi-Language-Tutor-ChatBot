@@ -15,12 +15,10 @@ const createToken = (res, userId) => {
 
     // Add cookie options logging
     const cookieOptions = {
+        sameSite: 'none',
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: true, // Required for cross-domain cookies
-        sameSite: 'none', // Required for cross-domain cookies
-        path: '/',
-        maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000, // Convert days to milliseconds
-        domain: '.onrender.com' // Allow sharing between subdomains on onrender.com
     };
 
     // console.log('Cookie options:', cookieOptions);
