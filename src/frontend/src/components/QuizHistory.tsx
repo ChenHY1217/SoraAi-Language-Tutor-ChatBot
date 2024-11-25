@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns";
 
 interface Quiz {
     _id: string;

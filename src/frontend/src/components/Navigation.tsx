@@ -19,7 +19,7 @@ import { toggleProfile, setProfile } from "../app/features/profile/profileSlice"
 // It contains links to the home page, login, and register pages.
 const Navigation: React.FC = () => {
     const { userInfo } = useAppSelector((state) => state.auth);
-    const profileOn = useAppSelector((state) => state.profile);
+    // const profileOn = useAppSelector((state) => state.profile);
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();

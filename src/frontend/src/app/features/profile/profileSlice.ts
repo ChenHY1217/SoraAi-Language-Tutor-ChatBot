@@ -5,7 +5,7 @@ const profileSlice = createSlice({
     initialState: false,
     reducers: {
         toggleProfile: (state) => !state,
-        setProfile: (state, action) => action.payload,
+        setProfile: (_state, action) => action.payload,
     },
 });
 
