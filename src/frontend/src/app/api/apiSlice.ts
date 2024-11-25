@@ -7,11 +7,6 @@ import { BASE_URL } from "../constants";
 // ✅ The Vite config file is now commented out
 const baseQuery = fetchBaseQuery({ 
     baseUrl: BASE_URL,
-    credentials: "include",
-    prepareHeaders: (headers) => {
-        headers.set('Access-Control-Allow-Credentials', 'true');
-        return headers;
-    },
 }); 
 
 export const apiSlice = createApi({

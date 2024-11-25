@@ -15,11 +15,10 @@ const createToken = (res, userId) => {
 
     // Add cookie options logging
     const cookieOptions = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // true in production
-        sameSite: 'none', // Change from 'strict' to 'lax'
-        path: '/',
+        sameSite: 'none',
+        secure: process.env.NODE_ENV !== 'development',
         maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
+        httpOnly: false,
     };
 
     // console.log('Cookie options:', cookieOptions);
