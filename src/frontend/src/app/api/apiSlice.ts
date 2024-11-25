@@ -9,6 +9,7 @@ const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL,
     credentials: "include",
     prepareHeaders: (headers) => {
+        headers.set('Access-Control-Allow-Credentials', 'true');
         return headers;
     },
 }); 

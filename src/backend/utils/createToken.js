@@ -17,7 +17,7 @@ const createToken = (res, userId) => {
     const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // true in production
-        sameSite: 'lax', // Change from 'strict' to 'lax'
+        sameSite: 'none', // Change from 'strict' to 'lax'
         path: '/',
         maxAge: process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
     };
