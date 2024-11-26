@@ -77,12 +77,42 @@ const Home: React.FC = () => {
                         <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
                             <h2 className="text-xl font-bold mb-4">Enable Cookies</h2>
                             <p className="mb-4">Please enable cookies for authentication to work properly.</p>
-                            <button
-                                onClick={handleCookieAccept}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                            >
-                                Accept
-                            </button>
+                            
+                            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                                <h3 className="font-semibold mb-2">How to enable cookies:</h3>
+                                <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600">
+                                    <li>Open your browser settings (⚙️)</li>
+                                    <li>Go to Privacy & Security</li>
+                                    <li>Look for Cookie settings</li>
+                                    <li>Enable cookies or select "Accept all cookies"</li>
+                                </ol>
+                                
+                                <div className="mt-4 text-xs text-gray-500">
+                                    <p className="font-medium">Quick links for popular browsers:</p>
+                                    <ul className="mt-1 space-y-1">
+                                        <li>Chrome: chrome://settings/cookies</li>
+                                        <li>Firefox: about:preferences#privacy</li>
+                                        <li>Safari: Preferences → Privacy</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-between">
+                                <button
+                                    onClick={handleCookieAccept}
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                                >
+                                    I've Enabled Cookies
+                                </button>
+                                <a 
+                                    href="https://www.cookiesandyou.com/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="px-4 py-2 text-blue-500 hover:text-blue-600"
+                                >
+                                    Learn More
+                                </a>
+                            </div>
                         </div>
                     </motion.div>
                 )}
