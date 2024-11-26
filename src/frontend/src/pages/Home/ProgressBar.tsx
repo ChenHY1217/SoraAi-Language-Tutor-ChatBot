@@ -163,7 +163,7 @@ const ProgressBar: React.FC = () => {
                         className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full
                             bg-white/90 backdrop-blur-sm shadow-xl border border-gray-200 
                             rounded-t-lg px-4 py-2 hover:bg-gray-50 transition-all cursor-pointer
-                            opacity-0 group-hover:opacity-100 z-50"
+                            opacity-0 group-hover:opacity-100 z-40"
                         aria-label={isVisible ? "Hide progress" : "Show progress"}
                     >
                         {isVisible ? <IoChevronForward className="rotate-90" /> : <IoChevronBack className="-rotate-90" />}
