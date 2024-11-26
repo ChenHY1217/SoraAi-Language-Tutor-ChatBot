@@ -18,17 +18,35 @@ const Home: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const checkIfCookiesEnabled = () => {
+        try {
+            document.cookie = "testCookie=1";
+            const cookieEnabled = document.cookie.indexOf("testCookie") !== -1;
+            document.cookie = "testCookie=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
+            return cookieEnabled;
+        } catch (e) {
+            return false;
+        }
+    };
+
     useEffect(() => {
         if (!userInfo) {
             navigate("/login");
         } else {
-            setShowCookieModal(true);
+            const cookiesEnabled = checkIfCookiesEnabled();
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            
+            if (!cookiesEnabled) {
+                toast.error('Please enable cookies in your browser settings to use this application.');
+            } else if (!cookieConsent) {
+                setShowCookieModal(true);
+            }
         }
     }, [userInfo, navigate]);
 
     const handleCookieAccept = () => {
         setShowCookieModal(false);
-        // Logic to enable cookies
+        localStorage.setItem('cookieConsent', 'true');
     };
 
     return (
