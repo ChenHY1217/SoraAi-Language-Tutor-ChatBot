@@ -240,8 +240,7 @@ const Quiz: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-0 z-50 bg-black/50"
-                            onClick={() => setShowQuiz(false)}
+                            className="fixed inset-0 z-40 bg-black/50"
                         />
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -250,7 +249,7 @@ const Quiz: React.FC = () => {
                             transition={{ duration: 0.2 }}
                             className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
                         >
-                            <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto pointer-events-auto">
+                            <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto pointer-events-auto z-50">
                                 <div className="border-b pb-4 mb-6">
                                     <h2 className="text-2xl font-bold text-gray-800 text-center">
                                         {quizData.title}

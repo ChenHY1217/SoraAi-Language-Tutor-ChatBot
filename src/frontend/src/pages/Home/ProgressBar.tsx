@@ -79,7 +79,7 @@ const ProgressBar: React.FC = () => {
 
     return (
         <>
-            <div className={`fixed top-24 right-10 transition-all duration-300 ease-in-out z-40 group
+            <div className={`fixed top-24 right-10 transition-all duration-300 ease-in-out z-30 group
                 ${isVisible ? 'translate-x-0' : 'translate-x-[calc(100%+40px)]'} hidden lg:block`}
             >
                 <button
@@ -154,7 +154,7 @@ const ProgressBar: React.FC = () => {
             </div>
 
             {/* Mobile version */}
-            <div className="fixed bottom-20 left-0 right-0 lg:hidden z-40 group">
+            <div className="fixed bottom-20 left-0 right-0 lg:hidden z-30 group">
                 <div className={`mx-4 transition-all duration-300 ease-in-out
                     ${isVisible ? 'translate-y-0' : 'translate-y-[calc(100%+80px)]'}`}
                 >
