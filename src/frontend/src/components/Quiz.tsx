@@ -240,7 +240,7 @@ const Quiz: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-0 z-40 bg-black/50"
+                            className="fixed inset-0 z-50 bg-black/50"
                         />
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}

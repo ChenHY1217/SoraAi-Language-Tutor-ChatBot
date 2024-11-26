@@ -154,7 +154,7 @@ const ProgressBar: React.FC = () => {
             </div>
 
             {/* Mobile version */}
-            <div className="fixed bottom-20 left-0 right-0 lg:hidden z-30 group">
+            <div className="fixed bottom-20 left-0 right-0 lg:hidden z-20"> {/* Lower z-index from z-30 to z-20 */}
                 <div className={`mx-4 transition-all duration-300 ease-in-out
                     ${isVisible ? 'translate-y-0' : 'translate-y-[calc(100%+80px)]'}`}
                 >
