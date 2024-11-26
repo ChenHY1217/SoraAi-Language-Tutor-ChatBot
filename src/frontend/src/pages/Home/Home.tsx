@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../app/hooks.ts'
 import { useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import IconNav from './IconNav.tsx'
 import Profile from '../Auth/Profile.tsx'
 import ChatSection from './ChatSection.tsx'
