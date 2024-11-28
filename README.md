@@ -15,6 +15,21 @@ SoraAi is an intelligent chatbot that helps you learn new languages through inte
 
 ## Tech Stack
 
+<div>
+  <a href="https://www.mongodb.com">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-plain-wordmark.svg" alt="MongoDB" width=50 />
+  </a>
+  <a href="https://expressjs.com">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" alt="ExpressJS" width=50 />
+  </a>
+  <a href="https://react.dev">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="ReactJS" width=50 />
+  </a>
+  <a href="https://nodejs.org/en">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original-wordmark.svg" alt="NodeJS" width=50 />
+  </a>
+</div>
+
 ### Frontend
 - React 18 with TypeScript
 - Redux Toolkit for state management
@@ -27,7 +42,6 @@ SoraAi is an intelligent chatbot that helps you learn new languages through inte
 - MongoDB with Mongoose
 - JWT authentication
 - OpenAI GPT-4 API integration
-- Nodemailer for email services
 
 ## License
 
